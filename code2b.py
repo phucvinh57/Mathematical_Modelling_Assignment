@@ -1,5 +1,6 @@
 import math
 from math import sqrt
+import pandas as pd
  
 # formula 3
 def cal_MCBlowAir(nHeatCO2, UBlow, PBlow, AFlr):
@@ -21,10 +22,10 @@ def cal_MCAirTop(fThScr, CO2Air, CO2Top):
     return fThScr * (CO2Air - CO2Top)
 
 # formula 7
-def cal_fThScr(UThScr, kThScr, tAir, tTop, g, PAir, PTop):
-    a = UThScr * kThScr * pow(abs(tAir - tTop), 2/3)
-    PMean_Air = (PAir + PTop) / 2
-    b = (1 - UThScr) * pow(g * (1 - UThScr) * abs(PAir - PTop) / (2 * PMean_Air), 1/2)
+def cal_fThScr(UThScr, KThScr, TAir, TTop, g, pAir, pTop):
+    a = UThScr * KThScr * pow(abs(TAir - TTop), 2/3)
+    PMean_Air = (pAir + pTop) / 2
+    b = (1 - UThScr) * pow(g * (1 - UThScr) * abs(pAir - pTop) / (2 * PMean_Air), 1/2)
     return a + b
 
 # formula 9
@@ -145,12 +146,75 @@ def cal_MCAirCan(P, R, CBuf, CMaxBuf):
 
 
 # formular 1
-def dxCO2Air(CO2Air, CO2Top):
+def dxCO2Air(CO2Air, CO2Top, i):
     # Read data from excel file
     # TODO
+    data = pd.read_excel("D:/Study/Mô hình hoá/Assignment/data.xlsx")
+    df = pd.DataFrame(data)
     
-    return 0
+    # Calculate MCBlowAir
+    nHeatCO2 = float(df.at[i, "nHeatCO2"])
+    UBlow = float(df.at[i, "UBlow"])
+    PBlow = float(df.at[i, 'PBlow'])
+    AFlr = float(df.at[i, 'AFlr'])
+    MCBlowAir = cal_MCBlowAir(nHeatCO2, UBlow, PBlow, AFlr)
+    print(MCBlowAir)
+    
+    # Calculate MCExtAir
+    UExtCO2 = float(df.at[i, 'UExtCO2'])
+    phiExtCO2 = float(df.at[i, 'phiExtCO2'])
+    MCExtAir = cal_MCExtAir(UExtCO2, phiExtCO2, AFlr)
+    print(MCExtAir)
 
+    # Calculate MCPadAir
+    UPad = float(df.at[i, 'UPad'])
+    phiPad = float(df.at[i, 'phiPad'])
+    CO2Out = float(df.at[i, 'CO2Out'])
+    MCPadAir = cal_MCPadAir_2(UPad, phiPad, AFlr, CO2Out, CO2Air)
+    print(MCPadAir)
+
+    # Calculate MCAirCan
+    P = 1
+    R = 0
+    CBuf = float(df.at[i, 'CBuf'])
+    CMax_Buf = float(df.at[i, 'CMax_Buf'])
+    MCAirCan = cal_MCAirCan(P, R, CBuf, CMax_Buf)
+    print(MCAirCan)
+
+    # Calculate MCAirTop
+    UThScr = float(df.at[i, 'UThScr'])
+    KThScr = float(df.at[i, 'KThScr'])
+    TAir = float(df.at[i, 'TAir'])
+    TTop = float(df.at[i, 'TTop'])
+    g = float(df.at[i, 'g'])
+    pAir = float(df.at[i, 'pAir'])
+    pTop = float(df.at[i, 'pTop'])
+    fThScr = cal_fThScr(UThScr, KThScr, TAir, TTop, g, pAir, pTop)
+    MCAirTop = cal_MCAirTop(fThScr, CO2Air, CO2Top)
+    print(MCAirTop)
+
+    # Calculte MCAirOut
+    cleakage = float(df.at[i, 'cleakage'])
+    vWind = float(df.at[i, 'vWind'])
+    fleakage = cal_fleakage(cleakage, vWind)
+    
+    UThScr = float(df.at[i, 'UThScr'])
+    fVentRoofSide = float(df.at[i, 'fVentRoofSide'])
+    nSide = float(df.at[i, 'nSide'])
+    nSide_Thr = float(df.at[i, 'nSide_Thr'])
+    nInsScr = float(df.at[i, 'nInsScr'])
+    UVentForced = float(df.at[i, 'UVentForced'])
+    phiVentForced = float(df.at[i, 'phiVentForced'])
+
+    fVentSide = cal_fVentSide(fleakage, UThScr, fVentRoofSide, nSide, nSide_Thr)
+    fVentForced = cal_fVentForced(nInsScr, UVentForced, phiVentForced, AFlr)
+
+    MCAirOut = cal_MCAirOut(fVentSide, fVentForced, CO2Air, CO2Top)
+    print(MCAirOut)
+
+    capCO2Air = float(df.at[i, 'capCO2Air'])
+    return (MCBlowAir + MCExtAir + MCPadAir - MCAirCan - MCAirTop - MCAirOut) / capCO2Air
+    
 
 # formula 2
 def dxCO2Top(CO2Air, CO2Top):
@@ -159,10 +223,7 @@ def dxCO2Top(CO2Air, CO2Top):
     
     return 0
 
-
-P = cal_P(440,2.5)
-print(P)
-R = cal_R(440,P)
-print(R)
-MCAirCan = cal_MCAirCan(P,R,0,1)
-print(MCAirCan)
+data = pd.read_excel("D:/Study/Mô hình hoá/Assignment/data.xlsx")
+df = pd.DataFrame(data)
+i = 0
+dxCO2Air(df.at[i, 'CO2Air'], df.at[i, 'CO2Top'], i)

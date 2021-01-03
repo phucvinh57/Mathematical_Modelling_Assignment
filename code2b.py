@@ -7,7 +7,7 @@ def cal_MCBlowAir(nHeatCO2, UBlow, PBlow, AFlr):
     return nHeatCO2 * UBlow * PBlow / AFlr
     
 # formula 4
-def cal_MCExTAir(UExtCO2, phiExtCO2, AFlr):
+def cal_MCExtAir(UExtCO2, phiExtCO2, AFlr):
     return UExtCO2 * phiExtCO2 / AFlr
 
 # formula 5
@@ -146,11 +146,11 @@ def dxCO2Air(CO2Air, CO2Top, i):
     MCBlowAir = cal_MCBlowAir(nHeatCO2, UBlow, PBlow, AFlr)
     print(MCBlowAir)
     
-    # Calculate MCExTAir
+    # Calculate MCExtAir
     UExtCO2 = float(df.at[i, 'UExtCO2'])
     phiExtCO2 = float(df.at[i, 'phiExtCO2'])
-    MCExTAir = cal_MCExTAir(UExtCO2, phiExtCO2, AFlr)
-    print(MCExTAir)
+    MCExtAir = cal_MCExtAir(UExtCO2, phiExtCO2, AFlr)
+    print(MCExtAir)
 
     # Calculate MCPadAir
     UPad = float(df.at[i, 'UPad'])
@@ -180,12 +180,26 @@ def dxCO2Air(CO2Air, CO2Top, i):
     print(MCAirTop)
 
     # Calculte MCAirOut
+    cleakage = float(df.at[i, 'cleakage'])
+    vWind = float(df.at[i, 'vWind'])
+    fleakage = cal_fleakage(cleakage, vWind)
+    
+    UThScr = float(df.at[i, 'UThScr'])
+    fVentRoofSide = float(df.at[i, 'fVentRoofSide'])
+    nSide = float(df.at[i, 'nSide'])
+    nSide_Thr = float(df.at[i, 'nSide_Thr'])
+    nInsScr = float(df.at[i, 'nInsScr'])
+    UVentForced = float(df.at[i, 'UVentForced'])
+    phiVentForced = float(df.at[i, 'phiVentForced'])
 
     fVentSide = cal_fVentSide(fleakage, UThScr, fVentRoofSide, nSide, nSide_Thr)
     fVentForced = cal_fVentForced(nInsScr, UVentForced, phiVentForced, AFlr)
 
+    MCAirOut = cal_MCAirOut(fVentSide, fVentForced, CO2Air, CO2Top)
+    print(MCAirOut)
 
-    return 0
+    capCO2Air = float(df.at[i, 'capCO2Air'])
+    return (MCBlowAir + MCExtAir + MCPadAir - MCAirCan - MCAirTop - MCAirOut) / capCO2Air
     
 
 # formula 2

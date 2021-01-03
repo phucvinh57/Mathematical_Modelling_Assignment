@@ -94,7 +94,7 @@ def cal_MCAirCan(P, R, CBuf, CMaxBuf):
     return MCH2O * hCBuf * (P - R)
 
 # formula 19
-def hCBuf(CBuf, CBufMax):
+def cal_hCBuf(CBuf, CBufMax):
     return (int)(CBufMax >= CBuf)
 
 # formula 22
@@ -105,28 +105,28 @@ def cal_P(get_abc):
     return (-b-math.sqrt(b*b-4*a*c))/(2*a)
 
 # formula 23
-def k(T, T0, kT0, Ha, R):
+def cal_k(T, T0, kT0, Ha, R):
     return kT0 * math.exp(-Ha / R * (1 / T - 1 / T0))
 
 # formula 24
-def f(T, T0, Hd, R, S):
+def cal_f(T, T0, Hd, R, S):
     return (1 + math.exp(-Hd / R * (1 / T0 - S / Hd)))/(1 + math.exp(-Hd / R * (1 / T - S / Hd)))
 
 # formula 25
-def PMax_T(k, f):
+def cal_PMax_T(k, f):
     return k * f
 
 # formula 27
-def L(L0, K, LAI, m):
+def cal_L(L0, K, LAI, m):
     return L0 * (1 - (K * math.exp(-K * LAI)) / (1 - m))
 
 # formula 28
-def k_expand(LAI, k):
+def cal_k_expand(LAI, k):
     return LAI*k
 
 # formula 29 
 # PMax_T tinh theo k_expand
-def PMax_LT(P_MLT, PMax_T, L, L05):
+def cal_PMax_LT(P_MLT, PMax_T, L, L05):
     return (P_MLT * PMax_T * L) / (L + L05)
 
 

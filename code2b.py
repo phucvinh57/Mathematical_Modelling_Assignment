@@ -33,12 +33,13 @@ def cal_MCAirOut(fVentSide, fVentForce, CO2Air, CO2Out):
     return (fVentSide + fVentForce) * (CO2Air - CO2Out)
 
 # formula 10
-def cal_fVentRoofSide(Cd, AFlr, URoof, USide, ARoof, ASide, g, hSideRoof, TAir, TOut, TMean_Air, cW, vWind):
+def cal_ppfVentRoofSide(Cd, AFlr, URoof, USide, ARoof, ASide, g, hSideRoof, TAir, TOut, Cw, vWind):
     a = Cd / AFlr
     b = pow(URoof * USide * ARoof * ASide, 2) / (pow(URoof * ARoof, 2) + pow(USide * ASide, 2))
+    TMean_Air = (TAir + TOut) / 2
     c = 2 * g * hSideRoof * (TAir - TOut) / TMean_Air
     _d = (URoof * ARoof + USide * ASide) / 2
-    d = pow(_d, 2) * cW * pow(vWind, 2)
+    d = pow(_d, 2) * Cw * pow(vWind, 2)
     return a * sqrt(b * c + d)
 
 # formula 11
@@ -52,16 +53,18 @@ def cal_fleakage(cleakage, vWind):
     else:
         return vWind * cleakage
 
-# formula 13
-def cal_fVentSide(fleakage, UThScr, fVentRoofSide, nSide, nSide_Thr):
+# formula (**) calculate ppfVentSide
+def cal_ppfVentSide(Cd, USide, ASide, vWind, AFlr, Cw):
+    return Cd * USide * ASide * vWind * sqrt(Cw) / (2 * AFlr)
+
+# formula 13, use formula 10 and formula (**)
+def cal_fVentSide(nInsScr, ppfVentSide, fleakage, UThScr, ppfVentRoofSide, nSide, nSide_Thr):
     # nSide_Thr la nguong Stack
-    # pp_fVentSide la f"VentSide tinh bang fVentRoofSide tai ARoof = 0
-    pp_fVentSide = cal_fVentRoofSide(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-    nInsScr = cal_nInsScr(0)
+    # pp_fVentSide la f"VentSide tinh bang ppfVentRoofSide tai ARoof = 0
     if nSide >= nSide_Thr:
-        return nInsScr * pp_fVentSide + 0.5 * fleakage
+        return nInsScr * ppfVentSide + 0.5 * fleakage
     else:
-        nInsScr * (UThScr * pp_fVentSide + (1 - UThScr) * fVentRoofSide * nSide) + 0.5 * fleakage
+        return nInsScr * (UThScr * ppfVentSide + (1 - UThScr) * ppfVentRoofSide * nSide) + 0.5 * fleakage
 
 # formula 14
 def cal_fVentForced(nInsScr, UVentForced, phiVentForced, AFlr):
@@ -72,18 +75,18 @@ def cal_MCTopOut(fVentRoof, CO2Top, CO2Out):
     return fVentRoof * (CO2Top - CO2Out)
 
 # formula 16
-def cal_fVentRoof(nInsScr, fleakage, UThScr, fVentRoofSide, nRoof, nSide, nRoof_Thr):
+def cal_fVentRoof(nInsScr, fleakage, UThScr, ppfVentRoofSide, nRoof, nSide, nRoof_Thr, ppfVentRoof):
     # nRoof_Thr la nguong Stack
-    ppfVentRoof = cal_ppfVentRoof(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     if nRoof >= nRoof_Thr:
         return nInsScr * ppfVentRoof + 0.5 * fleakage
     else:
-        return nInsScr * (UThScr * ppfVentRoof + (1 - UThScr) * fVentRoofSide * nSide) + 0.5 * fleakage
+        return nInsScr * (UThScr * ppfVentRoof + (1 - UThScr) * ppfVentRoofSide * nSide) + 0.5 * fleakage
 
 # formula 17
-def cal_ppfVentRoof(Cd, URoof, ARoof, AFlr, g, hRoof, TAir, TOut, TMeanAir, Cw, vWind):
-    part1 = Cd * URoof * ARoof / 2 / AFlr
-    part2 = g * hRoof * (TAir - TOut)  / 2 / TMeanAir + Cw * pow(vWind, 2)
+def cal_ppfVentRoof(Cd, URoof, ARoof, AFlr, g, hVent, TAir, TOut, Cw, vWind):
+    TMeanAir = (TAir + TOut) / 2
+    part1 = Cd * URoof * ARoof / (2 * AFlr)
+    part2 = g * hVent * (TAir - TOut)  / 2 / TMeanAir + Cw * pow(vWind, 2)
     return part1 * sqrt(part2)
 
 # formular 18 include 19
@@ -152,7 +155,7 @@ def dxCO2Air(CO2Air, CO2Top, i):
     data = pd.read_excel("D:/Study/Mô hình hoá/Assignment/data.xlsx")
     df = pd.DataFrame(data)
     
-    # Calculate MCBlowAir
+    ######## Calculate MCBlowAir ########
     nHeatCO2 = float(df.at[i, "nHeatCO2"])
     UBlow = float(df.at[i, "UBlow"])
     PBlow = float(df.at[i, 'PBlow'])
@@ -160,28 +163,29 @@ def dxCO2Air(CO2Air, CO2Top, i):
     MCBlowAir = cal_MCBlowAir(nHeatCO2, UBlow, PBlow, AFlr)
     print(MCBlowAir)
     
-    # Calculate MCExtAir
+    ######## Calculate MCExtAir ########
     UExtCO2 = float(df.at[i, 'UExtCO2'])
     phiExtCO2 = float(df.at[i, 'phiExtCO2'])
     MCExtAir = cal_MCExtAir(UExtCO2, phiExtCO2, AFlr)
     print(MCExtAir)
 
-    # Calculate MCPadAir
+    ######## Calculate MCPadAir ########
     UPad = float(df.at[i, 'UPad'])
     phiPad = float(df.at[i, 'phiPad'])
     CO2Out = float(df.at[i, 'CO2Out'])
     MCPadAir = cal_MCPadAir_2(UPad, phiPad, AFlr, CO2Out, CO2Air)
     print(MCPadAir)
 
-    # Calculate MCAirCan
-    P = 1
-    R = 0
+    ######## Calculate MCAirCan ########
+    LAI = float(df.at[i, 'LAI'])
+    P = cal_P(CO2Air, LAI)
+    R = cal_R(CO2Air, P)
     CBuf = float(df.at[i, 'CBuf'])
     CMax_Buf = float(df.at[i, 'CMax_Buf'])
     MCAirCan = cal_MCAirCan(P, R, CBuf, CMax_Buf)
     print(MCAirCan)
 
-    # Calculate MCAirTop
+    ######## Calculate MCAirTop ########
     UThScr = float(df.at[i, 'UThScr'])
     KThScr = float(df.at[i, 'KThScr'])
     TAir = float(df.at[i, 'TAir'])
@@ -193,37 +197,105 @@ def dxCO2Air(CO2Air, CO2Top, i):
     MCAirTop = cal_MCAirTop(fThScr, CO2Air, CO2Top)
     print(MCAirTop)
 
-    # Calculte MCAirOut
+    ######## Calculte MCAirOut ########
+    # Calculate fleakage
     cleakage = float(df.at[i, 'cleakage'])
     vWind = float(df.at[i, 'vWind'])
-    fleakage = cal_fleakage(cleakage, vWind)
+    fleakage = cal_fleakage(cleakage, vWind) 
     
-    UThScr = float(df.at[i, 'UThScr'])
-    fVentRoofSide = float(df.at[i, 'fVentRoofSide'])
+    # Calculate ppfVentRoofSide
+    Cd = float(df.at[i, 'Cd'])
+    URoof = float(df.at[i, 'URoof'])
+    USide = float(df.at[i, 'USide'])
+    ARoof = float(df.at[i, 'ARoof'])
+    ASide = float(df.at[i, 'ASide'])
+    hSideRoof = float(df.at[i, 'hSideRoof'])
+    TOut = float(df.at[i, 'TOut'])
+    Cw = float(df.at[i, 'Cw'])
+    ppfVentRoofSide = cal_ppfVentRoofSide(Cd, AFlr, URoof, USide, ARoof, ASide, g, hSideRoof, TAir, TOut, Cw, vWind)
+
+    # Calculate ppfVentSide
+    ppfVentSide = cal_ppfVentSide(Cd, USide, ASide, vWind, AFlr, Cw)
+
+    # Calculate fVentSide
     nSide = float(df.at[i, 'nSide'])
     nSide_Thr = float(df.at[i, 'nSide_Thr'])
-    nInsScr = float(df.at[i, 'nInsScr'])
+    sInsScr = float(df.at[i, 'sInsScr'])
+    nInsScr = cal_nInsScr(sInsScr)
+    fVentSide = cal_fVentSide(nInsScr, ppfVentSide, fleakage, UThScr, ppfVentRoofSide, nSide, nSide_Thr)
+
+    # Calculate fVentForce
     UVentForced = float(df.at[i, 'UVentForced'])
     phiVentForced = float(df.at[i, 'phiVentForced'])
+    fVentForced = float(cal_fVentForced(nInsScr, UVentForced, phiVentForced, AFlr))
 
-    fVentSide = cal_fVentSide(fleakage, UThScr, fVentRoofSide, nSide, nSide_Thr)
-    fVentForced = cal_fVentForced(nInsScr, UVentForced, phiVentForced, AFlr)
-
-    MCAirOut = cal_MCAirOut(fVentSide, fVentForced, CO2Air, CO2Top)
+    MCAirOut = cal_MCAirOut(fVentSide, fVentForced, CO2Air, CO2Out)
     print(MCAirOut)
 
     capCO2Air = float(df.at[i, 'capCO2Air'])
     return (MCBlowAir + MCExtAir + MCPadAir - MCAirCan - MCAirTop - MCAirOut) / capCO2Air
-    
+
 
 # formula 2
-def dxCO2Top(CO2Air, CO2Top):
+def dxCO2Top(CO2Air, CO2Top, i):
     # Read data from excel file
     # TODO
-    
-    return 0
+    ######## Calculate MCAirTop ########
+    UThScr = float(df.at[i, 'UThScr'])
+    KThScr = float(df.at[i, 'KThScr'])
+    TAir = float(df.at[i, 'TAir'])
+    TTop = float(df.at[i, 'TTop'])
+    g = float(df.at[i, 'g'])
+    pAir = float(df.at[i, 'pAir'])
+    pTop = float(df.at[i, 'pTop'])
+    fThScr = cal_fThScr(UThScr, KThScr, TAir, TTop, g, pAir, pTop)
+    MCAirTop = cal_MCAirTop(fThScr, CO2Air, CO2Top)
+    print(MCAirTop)
 
+
+    ######## Calculate MCTopOut ########
+    # Calculate ppfVentRoofSide
+    AFlr = float(df.at[i, 'AFlr'])
+    Cd = float(df.at[i, 'Cd'])
+    URoof = float(df.at[i, 'URoof'])
+    USide = float(df.at[i, 'USide'])
+    ARoof = float(df.at[i, 'ARoof'])
+    ASide = float(df.at[i, 'ASide'])
+    hSideRoof = float(df.at[i, 'hSideRoof'])
+    TOut = float(df.at[i, 'TOut'])
+    Cw = float(df.at[i, 'Cw'])
+    vWind = float(df.at[i, 'vWind'])
+    ppfVentRoofSide = cal_ppfVentRoofSide(Cd, AFlr, URoof, USide, ARoof, ASide, g, hSideRoof, TAir, TOut, Cw, vWind)
+    
+    # Calculate ppfVentRoof
+    hVent = float(df.at[i, 'hVent'])
+    ppfVentRoof = cal_ppfVentRoof(Cd, URoof, ARoof, AFlr, g, hVent, TAir, TOut, Cw, vWind)
+    
+    # Calculate fleakage
+    cleakage = float(df.at[i, 'cleakage'])
+    fleakage = cal_fleakage(cleakage, vWind) 
+    
+    # Calculate fVentRoof
+    sInsScr = float(df.at[i, 'sInsScr'])
+    nInsScr = cal_nInsScr(sInsScr)
+    nRoof = float(df.at[i, 'nRoof'])
+    nSide = float(df.at[i, 'nSide'])
+    nRoof_Thr = float(df.at[i, 'nRoof_Thr'])
+    fVentRoof = cal_fVentRoof(nInsScr, fleakage, UThScr, ppfVentRoofSide, nRoof, nSide, nRoof_Thr, ppfVentRoof)
+
+    CO2Out = float(df.at[i, 'CO2Out'])
+    MCTopOut = cal_MCTopOut(fVentRoof, CO2Top, CO2Out)
+    print(MCTopOut)
+
+    capCO2Top = float(df.at[i, 'capCO2Top'])
+    return (MCAirTop - MCTopOut) / capCO2Top
+
+############## main ##############
 data = pd.read_excel("D:/Study/Mô hình hoá/Assignment/data.xlsx")
 df = pd.DataFrame(data)
-i = 0
-dxCO2Air(df.at[i, 'CO2Air'], df.at[i, 'CO2Top'], i)
+i = 1
+print(df.at[i, 'Place'])
+CO2Air = float(df.at[i, 'CO2Air'])
+CO2Top = float(df.at[i, 'CO2Top'])
+#dxCO2Air(CO2Air, CO2Top, i)
+dxCO2Top(CO2Air, CO2Top, i)

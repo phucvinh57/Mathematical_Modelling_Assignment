@@ -177,8 +177,9 @@ def dxCO2Air(CO2Air, CO2Top, i):
     print(MCPadAir)
 
     ######## Calculate MCAirCan ########
-    P = 1
-    R = 0
+    LAI = float(df.at[i, 'LAI'])
+    P = cal_P(CO2Air, LAI)
+    R = cal_R(CO2Air, P)
     CBuf = float(df.at[i, 'CBuf'])
     CMax_Buf = float(df.at[i, 'CMax_Buf'])
     MCAirCan = cal_MCAirCan(P, R, CBuf, CMax_Buf)

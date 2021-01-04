@@ -111,48 +111,48 @@ def cal_MCAirCan(P, R, CBuf, CMaxBuf):
         hCBuf = 0
     return MCH2O * hCBuf * (P - R)
 
-# # formula 19
-# def cal_hCBuf(CBuf, CBufMax):
-#     return (int)(CBufMax >= CBuf)
+# formula 19
+def cal_hCBuf(CBuf, CBufMax):
+    return (int)(CBufMax >= CBuf)
 
-# # formula 22
-# def get_abc(Res,CO2Air,CO2_05,PMax):
-#     return Res,-(CO2Air+CO2_05+Res*PMax),CO2Air*PMax
-# def cal_P(get_abc):
-#     a,b,c = get_abc
-#     return (-b-math.sqrt(b*b-4*a*c))/(2*a)
+# formula 22
+def get_abc(Res,CO2Air,CO2_05,PMax):
+    return Res,-(CO2Air+CO2_05+Res*PMax),CO2Air*PMax
+def cal_P1(get_abc):
+    a,b,c = get_abc
+    return (-b-math.sqrt(b*b-4*a*c))/(2*a)
 
-# # formula 23
-# def cal_k(T, T0, kT0, Ha, R):
-#     return kT0 * math.exp(-Ha / R * (1 / T - 1 / T0))
+# formula 23
+def cal_k(T, T0, kT0, Ha, R):
+    return kT0 * math.exp(-Ha / R * (1 / T - 1 / T0))
 
-# # formula 24
-# def cal_f(T, T0, Hd, R, S):
-#     return (1 + math.exp(-Hd / R * (1 / T0 - S / Hd)))/(1 + math.exp(-Hd / R * (1 / T - S / Hd)))
+# formula 24
+def cal_f(T, T0, Hd, R, S):
+    return (1 + math.exp(-Hd / R * (1 / T0 - S / Hd)))/(1 + math.exp(-Hd / R * (1 / T - S / Hd)))
 
-# # formula 25
-# def cal_PMax_T(k, f):
-#     return k * f
+# formula 25
+def cal_PMax_T(k, f):
+    return k * f
 
-# # formula 27
-# def cal_L(L0, K, LAI, m):
-#     return L0 * (1 - (K * math.exp(-K * LAI)) / (1 - m))
+# formula 27
+def cal_L(L0, K, LAI, m):
+    return L0 * (1 - (K * math.exp(-K * LAI)) / (1 - m))
 
-# # formula 28
-# def cal_k_expand(LAI, k):
-#     return LAI*k
+# formula 28
+def cal_k_expand(LAI, k):
+    return LAI*k
 
-# # formula 29 
-# # PMax_T tinh theo k_expand
-# def cal_PMax_LT(P_MLT, PMax_T, L, L05):
-#     return (P_MLT * PMax_T * L) / (L + L05)
+# formula 29 
+# PMax_T tinh theo k_expand
+def cal_PMax_LT(P_MLT, PMax_T, L, L05):
+    return (P_MLT * PMax_T * L) / (L + L05)
 
 
 # formular 1
 def dxCO2Air(CO2Air, CO2Top, i):
     # Read data from excel file
     # TODO
-    data = pd.read_excel("D:/Study/Mô hình hoá/Assignment/data.xlsx")
+    data = pd.read_excel("data.xlsx")
     df = pd.DataFrame(data)
     
     ######## Calculate MCBlowAir ########
@@ -291,11 +291,11 @@ def dxCO2Top(CO2Air, CO2Top, i):
     return (MCAirTop - MCTopOut) / capCO2Top
 
 ############## main ##############
-data = pd.read_excel("D:/Study/Mô hình hoá/Assignment/data.xlsx")
+data = pd.read_excel("data.xlsx")
 df = pd.DataFrame(data)
 i = 1
 print(df.at[i, 'Place'])
 CO2Air = float(df.at[i, 'CO2Air'])
 CO2Top = float(df.at[i, 'CO2Top'])
-#dxCO2Air(CO2Air, CO2Top, i)
-dxCO2Top(CO2Air, CO2Top, i)
+dxCO2Air(CO2Air, CO2Top, i)
+#dxCO2Top(CO2Air, CO2Top, i)

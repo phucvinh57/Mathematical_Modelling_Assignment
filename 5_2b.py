@@ -162,7 +162,7 @@ def dxVPAir(VPAir, VPTop, i):
     TThScr = float(df.at[i, 'TThScr'])
     HECAirThScr = 1.7*UThScr*pow(abs(TAir - TThScr), 0.33)
     VPThScr = 
-    MVAirThSCR = cal_MVAirThScr(HECAirThScr, VPAir, VPThScr)
+    MVAirThScr = cal_MVAirThScr(HECAirThScr, VPAir, VPThScr)
     ######## Calculate MVAirTop ########
     MWater = 18
     R = 8.314*pow(10,3)
@@ -205,23 +205,55 @@ def dxVPAir(VPAir, VPTop, i):
     HECMechAir = 
     VPMech = 
     MVAirMech = cal_MVAirMech(HECMechAir,VPAir,VPMech)
+    capVPAir = float(df.at[i, 'capVPAir'])
+    return (MVCanAir+MVPadAir+MVFogAir+MVBlowair-MVAirThScr-MVAirTop-MVAirOut-MVAirOut_Pad-MVAirMech)/capVPAir
+
+def dxVPTop(VPAir, VPTop, i):
+    # TODO
+    data = pd.read_excel("data_VP.xlsx")
+    df = pd.DataFrame(data)
+    ######## Calculate MVAirTop ########
+    MWater = 18
+    R = 8.314*pow(10,3)
+    KThScr = float(df.at[i, 'KThScr'])
+    TOut = float(df.at[i, 'TOut'])
+    p_Mean_Air = float(df.at[i, 'p_Mean_Air'])
+    pOut = float(df.at[i, 'pOut'])
+    g = float(df.at[i, 'g'])
+    UThScr = float(df.at[i, 'UThScr'])
+    TAir = float(df.at[i, 'TAir'])
+    pAir = float(df.at[i, 'pAir'])
+    fThScr = UThScr*KThScr*pow(abs(TAir - TOut), 0.66)+(1-UThScr)/p_Mean_Air*pow((0.5*p_Mean_Air*(1-UThScr)*g*abs(pAir-pOut)),0.5)
+    TAir = float(df.at[i, 'TAir'])
+    TTop = float(df.at[i, 'TTop'])
+    MVAirTop = cal_MVAirTop(MWater,R,fThScr, VPAir, VPTop,TAir,TTop)
     ######## Calculate MVTopCov_in ########
     cHECin = float(df.at[i, 'cHECin'])
     TCov_in = 
     ACov = float(df.at[i, 'ACov'])
+    AFlr = float(df.at[i, 'AFlr'])
     MVTopCov_in = cal_HECTopCov_in(cHECin,TTop,TCov_in,ACov,AFlr)
     ######## Calculate MVTopOut ########
     # calculate fVentRoof
     nRoof = float(df.at[i, 'nRoof'])
     nRoof_Thr = float(df.at[i, 'nRoof_Thr'])
     hVent = float(df.at[i, 'hVent'])
+    sInsScr = float(df.at[i, 'sInsScr'])
+    nInsScr = cal_nInsScr(sInsScr)
+    Cd = float(df.at[i, 'Cd'])
+    USide = float(df.at[i, 'USide'])
+    ASide = float(df.at[i, 'ASide'])
+    vWind = float(df.at[i, 'vWind'])
+    Cw = float(df.at[i, 'Cw'])
+    URoof = float(df.at[i, 'URoof'])
+    ARoof = float(df.at[i, 'ARoof'])
+    hSideRoof = float(df.at[i, 'hSideRoof'])
+    nSide = float(df.at[i, 'nSide'])
+    cleakage = float(df.at[i, 'cleakage'])
+    fleakage = cal_fleakage(cleakage, vWind) 
+    ppfVentRoofSide = cal_ppfVentRoofSide(Cd,AFlr,URoof,USide,ARoof,ASide,g,hSideRoof,TAir,TOut,Cw,vWind)
     ppfVentRoof = cal_ppfVentRoof(Cd,URoof,ARoof,AFlr,g,hVent,TAir,TOut,Cw,vWind)
     fVentRoof = cal_fVentRoof(nInsScr,fleakage,UThScr,ppfVentRoofSide,nRoof,nSide,nRoof_Thr,ppfVentRoof)
-    
     MVTopOut = cal_MVTopOut(MWater,R,fVentRoof,VPAir,VPTop,TAir,TTop)
-
-    return 0
-
-def dxVPTop(VPAir, VPTop, i):
-    # TODO
-    return 0
+    capVPTop = float(df.at[i, 'capVPTop'])
+    return (MVAirTop-MVTopCov_in-MVTopOut)/capVPTop

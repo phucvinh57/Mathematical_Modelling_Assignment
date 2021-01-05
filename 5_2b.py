@@ -63,8 +63,6 @@ def cal_ppfVentRoofSide(Cd, AFlr, URoof, USide, ARoof, ASide, g, hSideRoof, TAir
 def cal_fVentForced(nInsScr, UVentForced, phiVentForced, AFlr):  # use for formula 8
     return nInsScr * UVentForced * phiVentForced / AFlr
 
- # formula 9
-
 # formula 9
 def cal_MVTopOut(MWater, R, fVentRoof, VPAir, VPTop, TAir, TTop):
     return (MWater / R) * fVentRoof * (VPAir / TAir - VPTop / TTop)
@@ -85,8 +83,10 @@ def cal_MVAirMech(HECMechAir, VPAir, VPMech):
         return 0
     else:
         return 6.4 * pow(10, -9) * HECMechAir * (VPAir - VPMech)
-def cal_HECMechAir(): #use for formula 11
-    return 0
+def cal_HECMechAir(UMechCool, COPMechCool, PMechCool, AFlr, TAir, TMechCool, delta_H, VPAir, VPMechCool): #use for formula 11
+    A1 = UMechCool * COPMechCool * PMechCool / AFlr
+    A2 = TAir - TMechCool + 6.4 * pow(10, -9) * delta_H * (VPAir -VPMechCool)
+    return A1 / A2
 
 # formula 12
 def cal_MVTopCov_in(HECTopCov_in, VPTop, VPCov_in):

@@ -96,3 +96,13 @@ def cal_MVTopCov_in(HECTopCov_in, VPTop, VPCov_in):
         return 6.4 * pow(10, -9) * HECTopCov_in * (VPTop - VPCov_in)
 def cal_HECTopCov_in(cHECin, TTop, TCov_in, ACov, AFlr): #use for formula 12
     return cHECin * pow(TTop - TCov_in, 0.33) * ACov / AFlr
+
+
+###### Calculate dx ######
+def dxVPAir(VPAir, VPTop, i):
+    # TODO
+    return 0
+
+def dxVPTop(VPAir, VPTop, i):
+    # TODO
+    return 0

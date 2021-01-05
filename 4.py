@@ -1,12 +1,12 @@
 from code2b import dxCO2Air, dxCO2Top
+line = 0
 def euler(CO2Air0, CO2Top0, h, time):
     jump_step = int(time/h)
     CO2Air = CO2Air0
     CO2Top = CO2Top0
-
     for i in range(1, jump_step+1):
-        k = h * dxCO2Air(CO2Air, CO2Top)
-        t = h * dxCO2Top(CO2Air, CO2Top)
+        k = h * dxCO2Air(CO2Air, CO2Top, line)
+        t = h * dxCO2Top(CO2Air, CO2Top, line)
 
         CO2Air += k
         CO2Top += t
@@ -20,14 +20,14 @@ def rk4(CO2Air0, CO2Top0, h, time):
     CO2Top = CO2Top0
 
     for i in range(1, jump_step+1):
-        k1 = h * dxCO2Air(CO2Air, CO2Top)
-        t1 = h * dxCO2Top(CO2Air, CO2Top)
-        k2 = h * dxCO2Air(CO2Air+0.5*k1, CO2Top+0.5*k1)
-        t2 = h * dxCO2Top(CO2Air+0.5*t1, CO2Top+0.5*t1)
-        k3 = h * dxCO2Air(CO2Air+0.5*k2, CO2Top+0.5*k2)
-        t3 = h * dxCO2Top(CO2Air+0.5*t2, CO2Top+0.5*t2)
-        k4 = h * dxCO2Air(CO2Air+k3, CO2Top+k3)
-        t4 = h * dxCO2Top(CO2Air+t3, CO2Top+t3)
+        k1 = h * dxCO2Air(CO2Air, CO2Top, line)
+        t1 = h * dxCO2Top(CO2Air, CO2Top, line)
+        k2 = h * dxCO2Air(CO2Air+0.5*k1, CO2Top+0.5*k1, line)
+        t2 = h * dxCO2Top(CO2Air+0.5*t1, CO2Top+0.5*t1, line)
+        k3 = h * dxCO2Air(CO2Air+0.5*k2, CO2Top+0.5*k2, line)
+        t3 = h * dxCO2Top(CO2Air+0.5*t2, CO2Top+0.5*t2, line)
+        k4 = h * dxCO2Air(CO2Air+k3, CO2Top+k3, line)
+        t4 = h * dxCO2Top(CO2Air+t3, CO2Top+t3, line)
 
         CO2Air += (1.0/6.0) * (k1+2*k2+2*k3+k4)
         CO2Top += (1.0/6.0) * (t1+2*t2+2*t3+t4)

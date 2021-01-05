@@ -90,8 +90,22 @@ def cal_ppfVentRoof(Cd, URoof, ARoof, AFlr, g, hVent, TAir, TOut, Cw, vWind):
     return part1 * sqrt(part2)
 
 # formular 18 include 19
+# tinh P
+def cal_P(CO2Air,LAI):
+    T_Can_K = 20+273
+    J_POT = LAI*210*math.exp(37000*(T_Can_K-298.15)/(8.314*T_Can_K*298.15))*(1+math.exp((710*298.15-220000)/(8.314*298.15)))/(1+math.exp((710*T_Can_K-220000)/(8.314*T_Can_K)))
+    J = (J_POT + 38.5 - math.sqrt(math.pow(J_POT+38.5, 2)-2.8*J_POT*38.5))/1.4
+    CO2Stom = 0.67*CO2Air
+    P = (J*(CO2Stom-498.1))/(4*(CO2Stom+2*498.1))
+    return P
+# tinh R
+def cal_R(CO2Air,P):
+    CO2Stom = 0.67*CO2Air
+    R = P*498.1/CO2Stom
+    return R
+
 def cal_MCAirCan(P, R, CBuf, CMaxBuf):
-    MCH2O = 30
+    MCH2O = 0.03
     hCBuf = 1
     if CBuf > CMaxBuf:
         hCBuf = 0
@@ -104,7 +118,7 @@ def cal_hCBuf(CBuf, CBufMax):
 # formula 22
 def get_abc(Res,CO2Air,CO2_05,PMax):
     return Res,-(CO2Air+CO2_05+Res*PMax),CO2Air*PMax
-def cal_P(get_abc):
+def cal_P1(get_abc):
     a,b,c = get_abc
     return (-b-math.sqrt(b*b-4*a*c))/(2*a)
 
@@ -138,7 +152,7 @@ def cal_PMax_LT(P_MLT, PMax_T, L, L05):
 def dxCO2Air(CO2Air, CO2Top, i):
     # Read data from excel file
     # TODO
-    data = pd.read_excel("D:/Study/Mô hình hoá/Assignment/data.xlsx")
+    data = pd.read_excel("data.xlsx")
     df = pd.DataFrame(data)
     
     ######## Calculate MCBlowAir ########
@@ -163,8 +177,9 @@ def dxCO2Air(CO2Air, CO2Top, i):
     print(MCPadAir)
 
     ######## Calculate MCAirCan ########
-    P = 1
-    R = 0
+    LAI = float(df.at[i, 'LAI'])
+    P = cal_P(CO2Air, LAI)
+    R = cal_R(CO2Air, P)
     CBuf = float(df.at[i, 'CBuf'])
     CMax_Buf = float(df.at[i, 'CMax_Buf'])
     MCAirCan = cal_MCAirCan(P, R, CBuf, CMax_Buf)
@@ -276,11 +291,11 @@ def dxCO2Top(CO2Air, CO2Top, i):
     return (MCAirTop - MCTopOut) / capCO2Top
 
 ############## main ##############
-data = pd.read_excel("D:/Study/Mô hình hoá/Assignment/data.xlsx")
+data = pd.read_excel("data.xlsx")
 df = pd.DataFrame(data)
 i = 1
 print(df.at[i, 'Place'])
 CO2Air = float(df.at[i, 'CO2Air'])
 CO2Top = float(df.at[i, 'CO2Top'])
-#dxCO2Air(CO2Air, CO2Top, i)
-dxCO2Top(CO2Air, CO2Top, i)
+dxCO2Air(CO2Air, CO2Top, i)
+#dxCO2Top(CO2Air, CO2Top, i)

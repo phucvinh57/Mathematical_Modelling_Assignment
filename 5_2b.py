@@ -161,7 +161,7 @@ def dxVPAir(VPAir, VPTop, i):
     TAir = float(df.at[i, 'TAir'])
     TThScr = float(df.at[i, 'TThScr'])
     HECAirThScr = 1.7*UThScr*pow(abs(TAir - TThScr), 0.33)
-    VPThScr = 
+    VPThScr = float(df.at[i, 'VPThScr'])
     MVAirThScr = cal_MVAirThScr(HECAirThScr, VPAir, VPThScr)
     ######## Calculate MVAirTop ########
     MWater = 18
@@ -202,8 +202,8 @@ def dxVPAir(VPAir, VPTop, i):
     ######## Calculate MVAirOut_Pad ########
     MVAirOut_Pad = cal_MVAirOut_Pad(fPad,MWater,R,VPAir,TAir)
     ######## Calculate MVAirMech ########
-    HECMechAir = 
-    VPMech = 
+    HECMechAir = float(df.at[i, 'HECMechAir'])
+    VPMech = float(df.at[i, 'VPMech'])
     MVAirMech = cal_MVAirMech(HECMechAir,VPAir,VPMech)
     capVPAir = float(df.at[i, 'capVPAir'])
     return (MVCanAir+MVPadAir+MVFogAir+MVBlowair-MVAirThScr-MVAirTop-MVAirOut-MVAirOut_Pad-MVAirMech)/capVPAir
@@ -229,7 +229,7 @@ def dxVPTop(VPAir, VPTop, i):
     MVAirTop = cal_MVAirTop(MWater,R,fThScr, VPAir, VPTop,TAir,TTop)
     ######## Calculate MVTopCov_in ########
     cHECin = float(df.at[i, 'cHECin'])
-    TCov_in = 
+    TCov_in = float(df.at[i, 'TCov_in'])
     ACov = float(df.at[i, 'ACov'])
     AFlr = float(df.at[i, 'AFlr'])
     MVTopCov_in = cal_HECTopCov_in(cHECin,TTop,TCov_in,ACov,AFlr)

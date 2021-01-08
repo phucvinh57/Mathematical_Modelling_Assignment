@@ -1,7 +1,13 @@
-from Mathematical_Modelling_Assignment.code2b import CO2Air, cal_ppfVentRoof
 import math
 from math import sqrt
 import pandas as pd
+
+# f''VentRoof
+def cal_ppfVentRoof(Cd, URoof, ARoof, AFlr, g, hVent, TAir, TOut, Cw, vWind):
+    TMeanAir = (TAir + TOut) / 2
+    part1 = Cd * URoof * ARoof / (2 * AFlr)
+    part2 = g * hVent * (TAir - TOut) / 2 / TMeanAir + Cw * pow(vWind, 2)
+    return part1 * sqrt(part2)
 
 # formula 1
 def cal_MVCanAir(VECCanAir, VPCan, VPAir):
@@ -10,7 +16,7 @@ def cal_MVCanAir(VECCanAir, VPCan, VPAir):
 # formula 2
 def cal_VECCanAir(pAir, c_p_Air, LAI, delta_H, y, rb, rs): #y is gamma
     return 2 * pAir * c_p_Air * LAI / (delta_H * y *(rb + rs))
-def cal_rs(VPCan, VPAir, R_Can):
+def cal_rs(VPCan, VPAir, R_Can, CO2Air):
     rs_min = 82
     c_evap1 = 4.3
     c_evap2 = 0.54

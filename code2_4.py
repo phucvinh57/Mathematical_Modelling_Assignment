@@ -134,7 +134,8 @@ def cal_MCAirCan(P, R, CBuf, CMaxBuf):
         hCBuf = 0
     return MCH2O * hCBuf * (P - R)
 
-i = 0
+print("Input line of data: ")
+i = input()
 # Read data from excel file
 data = pd.read_excel("data_4.xlsx")
 df = pd.DataFrame(data)

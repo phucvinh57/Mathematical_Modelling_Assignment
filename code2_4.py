@@ -134,9 +134,10 @@ def cal_MCAirCan(P, R, CBuf, CMaxBuf):
         hCBuf = 0
     return MCH2O * hCBuf * (P - R)
 
-i = 0
+print("Input line of data: ")
+i = input()
 # Read data from excel file
-data = pd.read_excel("data_4.xlsx")
+data = pd.read_excel("data_CO2.xlsx")
 df = pd.DataFrame(data)
 nHeatCO2 = float(df.at[i, "nHeatCO2"])
 UBlow = float(df.at[i, "UBlow"])
@@ -186,22 +187,22 @@ def dxCO2Air(CO2Air, CO2Top):
 
     ######## Calculate MCBlowAir ########
     MCBlowAir = cal_MCBlowAir(nHeatCO2, UBlow, PBlow, AFlr)
-
+    print("MCBlowAir = ", MCBlowAir)
     ######## Calculate MCExtAir ########
     MCExtAir = cal_MCExtAir(UExtCO2, phiExtCO2, AFlr)
-
+    print("MCExtAir = ", MCExtAir)
     ######## Calculate MCPadAir ########
     MCPadAir = cal_MCPadAir_2(UPad, phiPad, AFlr, CO2Out, CO2Air)
-
+    print("MCPadAir = ", MCPadAir)
     ######## Calculate MCAirCan ########
     P = cal_P(CO2Air, LAI)
     R = 0
     MCAirCan = cal_MCAirCan(P, R, CBuf, CMax_Buf)
-
+    print("MCAirCan = ", MCAirCan)
     ######## Calculate MCAirTop ########
     fThScr = cal_fThScr(UThScr, KThScr, TAir, TTop, g, pAir, pTop)
     MCAirTop = cal_MCAirTop(fThScr, CO2Air, CO2Top)
-
+    print("MCAirTop = ", MCAirTop)
     ######## Calculte MCAirOut ########
     # Calculate fleakage
     fleakage = cal_fleakage(cleakage, vWind)
@@ -220,7 +221,7 @@ def dxCO2Air(CO2Air, CO2Top):
     fVentForced = float(cal_fVentForced(nInsScr, UVentForced, phiVentForced, AFlr))
 
     MCAirOut = cal_MCAirOut(fVentSide, fVentForced, CO2Air, CO2Out)
-
+    print("MCAirOut = ", MCAirOut)
     return (MCBlowAir + MCExtAir + MCPadAir - MCAirCan - MCAirTop - MCAirOut) / capCO2Air
 
 
@@ -231,7 +232,7 @@ def dxCO2Top(CO2Air, CO2Top):
     ######## Calculate MCAirTop ########
     fThScr = cal_fThScr(UThScr, KThScr, TAir, TTop, g, pAir, pTop)
     MCAirTop = cal_MCAirTop(fThScr, CO2Air, CO2Top)
-
+    print("MCAirTop = ", MCAirTop)
     ######## Calculate MCTopOut ########
     # Calculate ppfVentRoofSide
     ppfVentRoofSide = cal_ppfVentRoofSide(Cd, AFlr, URoof, USide, ARoof, ASide, g, hSideRoof, TAir, TOut, Cw, vWind)
@@ -246,6 +247,7 @@ def dxCO2Top(CO2Air, CO2Top):
     nInsScr = cal_nInsScr(sInsScr)
     fVentRoof = cal_fVentRoof(nInsScr, fleakage, UThScr, ppfVentRoofSide, nRoof, nSide, nRoof_Thr, ppfVentRoof)
     MCTopOut = cal_MCTopOut(fVentRoof, CO2Top, CO2Out)
+    print("MCTopOut = ", MCTopOut)
 
     return (MCAirTop - MCTopOut) / capCO2Top
 

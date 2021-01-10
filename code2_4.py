@@ -134,120 +134,93 @@ def cal_MCAirCan(P, R, CBuf, CMaxBuf):
         hCBuf = 0
     return MCH2O * hCBuf * (P - R)
 
-
-# # formula 19
-# def cal_hCBuf(CBuf, CBufMax):
-#     return (int)(CBufMax >= CBuf)
-
-# # formula 22
-# def get_abc(Res,CO2Air,CO2_05,PMax):
-#     return Res,-(CO2Air+CO2_05+Res*PMax),CO2Air*PMax
-# def cal_P(get_abc):
-#     a,b,c = get_abc
-#     return (-b-math.sqrt(b*b-4*a*c))/(2*a)
-
-# # formula 23
-# def cal_k(T, T0, kT0, Ha, R):
-#     return kT0 * math.exp(-Ha / R * (1 / T - 1 / T0))
-
-# # formula 24
-# def cal_f(T, T0, Hd, R, S):
-#     return (1 + math.exp(-Hd / R * (1 / T0 - S / Hd)))/(1 + math.exp(-Hd / R * (1 / T - S / Hd)))
-
-# # formula 25
-# def cal_PMax_T(k, f):
-#     return k * f
-
-# # formula 27
-# def cal_L(L0, K, LAI, m):
-#     return L0 * (1 - (K * math.exp(-K * LAI)) / (1 - m))
-
-# # formula 28
-# def cal_k_expand(LAI, k):
-#     return LAI*k
-
-# # formula 29
-# # PMax_T tinh theo k_expand
-# def cal_PMax_LT(P_MLT, PMax_T, L, L05):
-#     return (P_MLT * PMax_T * L) / (L + L05)
-
+i = 0
+# Read data from excel file
+data = pd.read_excel("data.xlsx")
+df = pd.DataFrame(data)
+nHeatCO2 = float(df.at[i, "nHeatCO2"])
+UBlow = float(df.at[i, "UBlow"])
+PBlow = float(df.at[i, 'PBlow'])
+AFlr = float(df.at[i, 'AFlr'])
+UExtCO2 = float(df.at[0, 'UExtCO2'])
+phiExtCO2 = float(df.at[0, 'phiExtCO2'])
+UPad = float(df.at[0, 'UPad'])
+phiPad = float(df.at[0, 'phiPad'])
+CO2Out = float(df.at[0, 'CO2Out'])
+LAI = float(df.at[0, 'LAI'])
+CBuf = float(df.at[0, 'CBuf'])
+CMax_Buf = float(df.at[0, 'CMax_Buf'])
+UThScr = float(df.at[0, 'UThScr'])
+KThScr = float(df.at[0, 'KThScr'])
+TAir = float(df.at[0, 'TAir'])
+TTop = float(df.at[0, 'TTop'])
+g = float(df.at[0, 'g'])
+pAir = float(df.at[0, 'pAir'])
+pTop = float(df.at[0, 'pTop'])
+cleakage = float(df.at[0, 'cleakage'])
+vWind = float(df.at[0, 'vWind'])
+Cd = float(df.at[0, 'Cd'])
+URoof = float(df.at[0, 'URoof'])
+USide = float(df.at[0, 'USide'])
+ARoof = float(df.at[0, 'ARoof'])
+ASide = float(df.at[0, 'ASide'])
+hSideRoof = float(df.at[0, 'hSideRoof'])
+TOut = float(df.at[0, 'TOut'])
+Cw = float(df.at[0, 'Cw'])
+nSide = float(df.at[0, 'nSide'])
+nSide_Thr = float(df.at[0, 'nSide_Thr'])
+sInsScr = float(df.at[0, 'sInsScr'])
+UVentForced = float(df.at[0, 'UVentForced'])
+phiVentForced = float(df.at[0, 'phiVentForced'])
+capCO2Air = float(df.at[0, 'capCO2Air'])
+hVent = float(df.at[0, 'hVent'])
+nRoof = float(df.at[0, 'nRoof'])
+nRoof_Thr = float(df.at[0, 'nRoof_Thr'])
+capCO2Top = float(df.at[0, 'capCO2Top'])
+CO2Air = float(df.at[0, 'CO2Air'])
+CO2Top = float(df.at[0, 'CO2Top'])
 
 # formular 1
 def dxCO2Air(CO2Air, CO2Top):
     # TODO
 
     ######## Calculate MCBlowAir ########
-    nHeatCO2 = nHeatCO2_0
-    UBlow = UBlow_0
-    PBlow = PBlow_0
-    AFlr = AFlr_0
     MCBlowAir = cal_MCBlowAir(nHeatCO2, UBlow, PBlow, AFlr)
 
     ######## Calculate MCExtAir ########
-    UExtCO2 = UExtCO2_0
-    phiExtCO2 = phiExtCO2_0
     MCExtAir = cal_MCExtAir(UExtCO2, phiExtCO2, AFlr)
 
     ######## Calculate MCPadAir ########
-    UPad = UPad_0
-    phiPad = phiPad_0
-    CO2Out = CO2Out_0
     MCPadAir = cal_MCPadAir_2(UPad, phiPad, AFlr, CO2Out, CO2Air)
 
     ######## Calculate MCAirCan ########
-    LAI = LAI_0
     P = cal_P(CO2Air, LAI)
     R = 0
-    CBuf = CBuf_0
-    CMax_Buf = CMax_Buf_0
     MCAirCan = cal_MCAirCan(P, R, CBuf, CMax_Buf)
 
     ######## Calculate MCAirTop ########
-    UThScr = UThScr_0
-    KThScr = KThScr_0
-    TAir = TAir_0
-    TTop = TTop_0
-    g = g_0
-    pAir = pAir_0
-    pTop = pTop_0
     fThScr = cal_fThScr(UThScr, KThScr, TAir, TTop, g, pAir, pTop)
     MCAirTop = cal_MCAirTop(fThScr, CO2Air, CO2Top)
 
     ######## Calculte MCAirOut ########
     # Calculate fleakage
-    cleakage = cleakage_0
-    vWind = vWind_0
     fleakage = cal_fleakage(cleakage, vWind)
 
     # Calculate ppfVentRoofSide
-    Cd = Cd_0
-    URoof = URoof_0
-    USide = USide_0
-    ARoof = ARoof_0
-    ASide = ASide_0
-    hSideRoof = hSideRoof_0
-    TOut = TOut_0
-    Cw = Cw_0
     ppfVentRoofSide = cal_ppfVentRoofSide(Cd, AFlr, URoof, USide, ARoof, ASide, g, hSideRoof, TAir, TOut, Cw, vWind)
 
     # Calculate ppfVentSide
     ppfVentSide = cal_ppfVentSide(Cd, USide, ASide, vWind, AFlr, Cw)
 
     # Calculate fVentSide
-    nSide = nSide_0
-    nSide_Thr = nSide_Thr_0
-    sInsScr = sInsScr_0
     nInsScr = cal_nInsScr(sInsScr)
     fVentSide = cal_fVentSide(nInsScr, ppfVentSide, fleakage, UThScr, ppfVentRoofSide, nSide, nSide_Thr)
 
     # Calculate fVentForce
-    UVentForced = UVentForced_0
-    phiVentForced = phiVentForced_0
     fVentForced = float(cal_fVentForced(nInsScr, UVentForced, phiVentForced, AFlr))
 
     MCAirOut = cal_MCAirOut(fVentSide, fVentForced, CO2Air, CO2Out)
 
-    capCO2Air = capCO2Air_0
     return (MCBlowAir + MCExtAir + MCPadAir - MCAirCan - MCAirTop - MCAirOut) / capCO2Air
 
 
@@ -256,180 +229,106 @@ def dxCO2Top(CO2Air, CO2Top):
     # TODO
 
     ######## Calculate MCAirTop ########
-    UThScr = UThScr_0
-    KThScr = KThScr_0
-    TAir = TAir_0
-    TTop = TTop_0
-    g = g_0
-    pAir = pAir_0
-    pTop = pTop_0
     fThScr = cal_fThScr(UThScr, KThScr, TAir, TTop, g, pAir, pTop)
     MCAirTop = cal_MCAirTop(fThScr, CO2Air, CO2Top)
 
     ######## Calculate MCTopOut ########
     # Calculate ppfVentRoofSide
-    AFlr = AFlr_0
-    Cd = Cd_0
-    URoof = URoof_0
-    USide = USide_0
-    ARoof = ARoof_0
-    ASide = ASide_0
-    hSideRoof = hSideRoof_0
-    TOut = TOut_0
-    Cw = Cw_0
-    vWind = vWind_0
     ppfVentRoofSide = cal_ppfVentRoofSide(Cd, AFlr, URoof, USide, ARoof, ASide, g, hSideRoof, TAir, TOut, Cw, vWind)
 
     # Calculate ppfVentRoof
-    hVent = hVent_0
     ppfVentRoof = cal_ppfVentRoof(Cd, URoof, ARoof, AFlr, g, hVent, TAir, TOut, Cw, vWind)
 
     # Calculate fleakage
-    cleakage = cleakage_0
     fleakage = cal_fleakage(cleakage, vWind)
 
     # Calculate fVentRoof
-    sInsScr = sInsScr_0
     nInsScr = cal_nInsScr(sInsScr)
-    nRoof = nRoof_0
-    nSide = nSide_0
-    nRoof_Thr = nRoof_Thr_0
     fVentRoof = cal_fVentRoof(nInsScr, fleakage, UThScr, ppfVentRoofSide, nRoof, nSide, nRoof_Thr, ppfVentRoof)
-
-    CO2Out = CO2Out_0
     MCTopOut = cal_MCTopOut(fVentRoof, CO2Top, CO2Out)
 
-    capCO2Top = capCO2Top_0
     return (MCAirTop - MCTopOut) / capCO2Top
 
 
-def euler(CO2Air_0, CO2Top_0, h, time):
+def euler(CO2Air, CO2Top, h, time):
     n = int(time/h)
-    CO2Air = CO2Air_0
-    CO2Top = CO2Top_0
+    CO2Air_0 = CO2Air
+    CO2Top_0 = CO2Top
 
     for idx in range(1, n + 1):
-        k = h * dxCO2Air(CO2Air, CO2Top)
-        t = h * dxCO2Top(CO2Air, CO2Top)
+        k = h * dxCO2Air(CO2Air_0, CO2Top_0)
+        t = h * dxCO2Top(CO2Air_0, CO2Top_0)
 
-        CO2Air += k
-        CO2Top += t
+        CO2Air_0 += k
+        CO2Top_0 += t
 
         if idx % 300 == 0:
             row = idx // 300
             worksheet.write(row, 0, idx)
-            worksheet.write(row, 1, CO2Air)
-            worksheet.write(row, 2, CO2Top)
-            global TAir_0, TTop_0, TOut_0, vWind_0
-            TAir_0 = float(df.at[row, 'TAir'])
-            TTop_0 = float(df.at[row, 'TTop'])
-            TOut_0 = float(df.at[row, 'TOut'])
-            vWind_0 = float(df.at[row, 'vWind'])
+            worksheet.write(row, 1, CO2Air_0)
+            worksheet.write(row, 2, CO2Top_0)
+            global TAir, TTop, TOut, vWind
+            TAir = float(df.at[row, 'TAir'])
+            TTop = float(df.at[row, 'TTop'])
+            TOut = float(df.at[row, 'TOut'])
+            vWind = float(df.at[row, 'vWind'])
 
-    return CO2Air, CO2Top
+    return CO2Air_0, CO2Top_0
 
 
-def rk4(CO2Air_0, CO2Top_0, h, time):
+def rk4(CO2Air, CO2Top, h, time):
     n = int(time/h)
-    CO2Air = CO2Air_0
-    CO2Top = CO2Top_0
+    CO2Air_0 = CO2Air
+    CO2Top_0 = CO2Top
 
     for idx in range(1, n + 1):
-        k1 = h * dxCO2Air(CO2Air, CO2Top)
-        t1 = h * dxCO2Top(CO2Air, CO2Top)
-        k2 = h * dxCO2Air(CO2Air+0.5*k1, CO2Top+0.5*k1)
-        t2 = h * dxCO2Top(CO2Air+0.5*t1, CO2Top+0.5*t1)
-        k3 = h * dxCO2Air(CO2Air+0.5*k2, CO2Top+0.5*k2)
-        t3 = h * dxCO2Top(CO2Air+0.5*t2, CO2Top+0.5*t2)
-        k4 = h * dxCO2Air(CO2Air+k3, CO2Top+k3)
-        t4 = h * dxCO2Top(CO2Air+t3, CO2Top+t3)
+        k1 = h * dxCO2Air(CO2Air_0, CO2Top_0)
+        t1 = h * dxCO2Top(CO2Air_0, CO2Top_0)
+        k2 = h * dxCO2Air(CO2Air_0+0.5*k1, CO2Top_0+0.5*k1)
+        t2 = h * dxCO2Top(CO2Air_0+0.5*t1, CO2Top_0+0.5*t1)
+        k3 = h * dxCO2Air(CO2Air_0+0.5*k2, CO2Top_0+0.5*k2)
+        t3 = h * dxCO2Top(CO2Air_0+0.5*t2, CO2Top_0+0.5*t2)
+        k4 = h * dxCO2Air(CO2Air_0+k3, CO2Top_0+k3)
+        t4 = h * dxCO2Top(CO2Air_0+t3, CO2Top_0+t3)
 
-        CO2Air += (1.0/6.0) * (k1+2*k2+2*k3+k4)
-        CO2Top += (1.0/6.0) * (t1+2*t2+2*t3+t4)
+        CO2Air_0 += (1.0/6.0) * (k1+2*k2+2*k3+k4)
+        CO2Top_0 += (1.0/6.0) * (t1+2*t2+2*t3+t4)
 
         if idx % 300 == 0:
             row = idx // 300
-            worksheet.write(row, 4, CO2Air)
-            worksheet.write(row, 5, CO2Top)
-            global TAir_0, TTop_0, TOut_0, vWind_0
-            TAir_0 = float(df.at[row, 'TAir'])
-            TTop_0 = float(df.at[row, 'TTop'])
-            TOut_0 = float(df.at[row, 'TOut'])
-            vWind_0 = float(df.at[row, 'vWind'])
+            worksheet.write(row, 4, CO2Air_0)
+            worksheet.write(row, 5, CO2Top_0)
+            global TAir, TTop, TOut, vWind
+            TAir = float(df.at[row, 'TAir'])
+            TTop = float(df.at[row, 'TTop'])
+            TOut = float(df.at[row, 'TOut'])
+            vWind = float(df.at[row, 'vWind'])
 
-    return CO2Air, CO2Top
+    return CO2Air_0, CO2Top_0
 
 
 ############## main ##############
 def main():
     print(df.at[0, 'Place'])
-    print('CO2Air_0: ', CO2Air_0)
-    print('CO2Top_0: ', CO2Top_0)
+    print('CO2Air_0: ', CO2Air)
+    print('CO2Top_0: ', CO2Top)
 
     step = float(input('Input step: '))
     time = float(input('Input time: '))
 
-    air, top = euler(CO2Air_0, CO2Top_0, step, time)
+    air, top = euler(CO2Air, CO2Top, step, time)
     print('\nExplicit Euler')
     print('The CO2Air: ', round(air, 10))
     print('The CO2Top: ', round(top, 10))
 
-    global TAir_0, TTop_0, TOut_0, vWind_0
-    TAir_0 = float(df.at[0, 'TAir'])
-    TTop_0 = float(df.at[0, 'TTop'])
-    TOut_0 = float(df.at[0, 'TOut'])
-    vWind_0 = float(df.at[0, 'vWind'])
-
-    air, top = rk4(CO2Air_0, CO2Top_0, step, time)
+    air, top = rk4(CO2Air, CO2Top, step, time)
     print('\nExplicit Runge-Kutta 4th order')
     print('The CO2Air: ', round(air, 10))
     print('The CO2Top: ', round(top, 10))
 
+    print(CO2Air)
+    print(CO2Top)
 
-# Read data from excel file
-data = pd.read_excel("data.xlsx")
-df = pd.DataFrame(data)
-nHeatCO2_0 = float(df.at[0, "nHeatCO2"])
-UBlow_0 = float(df.at[0, "UBlow"])
-PBlow_0 = float(df.at[0, 'PBlow'])
-AFlr_0 = float(df.at[0, 'AFlr'])
-UExtCO2_0 = float(df.at[0, 'UExtCO2'])
-phiExtCO2_0 = float(df.at[0, 'phiExtCO2'])
-UPad_0 = float(df.at[0, 'UPad'])
-phiPad_0 = float(df.at[0, 'phiPad'])
-CO2Out_0 = float(df.at[0, 'CO2Out'])
-LAI_0 = float(df.at[0, 'LAI'])
-CBuf_0 = float(df.at[0, 'CBuf'])
-CMax_Buf_0 = float(df.at[0, 'CMax_Buf'])
-UThScr_0 = float(df.at[0, 'UThScr'])
-KThScr_0 = float(df.at[0, 'KThScr'])
-TAir_0 = float(df.at[0, 'TAir'])
-TTop_0 = float(df.at[0, 'TTop'])
-g_0 = float(df.at[0, 'g'])
-pAir_0 = float(df.at[0, 'pAir'])
-pTop_0 = float(df.at[0, 'pTop'])
-cleakage_0 = float(df.at[0, 'cleakage'])
-vWind_0 = float(df.at[0, 'vWind'])
-Cd_0 = float(df.at[0, 'Cd'])
-URoof_0 = float(df.at[0, 'URoof'])
-USide_0 = float(df.at[0, 'USide'])
-ARoof_0 = float(df.at[0, 'ARoof'])
-ASide_0 = float(df.at[0, 'ASide'])
-hSideRoof_0 = float(df.at[0, 'hSideRoof'])
-TOut_0 = float(df.at[0, 'TOut'])
-Cw_0 = float(df.at[0, 'Cw'])
-nSide_0 = float(df.at[0, 'nSide'])
-nSide_Thr_0 = float(df.at[0, 'nSide_Thr'])
-sInsScr_0 = float(df.at[0, 'sInsScr'])
-UVentForced_0 = float(df.at[0, 'UVentForced'])
-phiVentForced_0 = float(df.at[0, 'phiVentForced'])
-capCO2Air_0 = float(df.at[0, 'capCO2Air'])
-hVent_0 = float(df.at[0, 'hVent'])
-nRoof_0 = float(df.at[0, 'nRoof'])
-nRoof_Thr_0 = float(df.at[0, 'nRoof_Thr'])
-capCO2Top_0 = float(df.at[0, 'capCO2Top'])
-CO2Air_0 = float(df.at[0, 'CO2Air'])
-CO2Top_0 = float(df.at[0, 'CO2Top'])
 
 wb = Workbook('Output.xlsx')
 worksheet = wb.add_worksheet()

@@ -106,14 +106,14 @@ def cal_MVAirOut_Pad(fPad, MWater, R, VPAir, TAir):
     return fPad * MWater / R * VPAir / TAir
 
 # formula 11
-def cal_MVAirMech(HECMechAir, VPAir, VPMech):
+def cal_MVAirMech(HECAirMech, VPAir, VPMech):
     if VPAir <= VPMech:
         return 0
     else:
-        return 6.4 * pow(10, -9) * HECMechAir * (VPAir - VPMech)
-def cal_HECMechAir(UMechCool, COPMechCool, PMechCool, AFlr, TAir, TMechCool, delta_H, VPAir, VPMechCool): #use for formula 11
+        return 6.4 * pow(10, -9) * HECAirMech * (VPAir - VPMech)
+def cal_HECAirMech(UMechCool, COPMechCool, PMechCool, AFlr, TAir, TMechCool, delta_H, VPAir, VPMechCool): #use for formula 11
     A1 = UMechCool * COPMechCool * PMechCool / AFlr
-    A2 = TAir - TMechCool + 6.4 * pow(10, -9) * delta_H * (VPAir -VPMechCool)
+    A2 = -(TAir - TMechCool + 6.4 * pow(10, -9) * delta_H * (VPAir -VPMechCool))
     return A1 / A2
 
 # formula 12
@@ -126,7 +126,7 @@ def cal_HECTopCov_in(cHECin, TTop, TCov_in, ACov, AFlr): #use for formula 12
     return cHECin * pow(TTop - TCov_in, 0.33) * ACov / AFlr
 
 ##########   START READING DATA   ##########
-i = input()
+i = int(input())
 
 data = pd.read_excel("data_VP.xlsx")
 df = pd.DataFrame(data)
@@ -162,8 +162,8 @@ TThScr = float(df.at[i, 'TThScr'])
 HECAirThScr = 1.7*UThScr*pow(abs(TAir - TThScr), 0.33)
 VPThScr = float(df.at[i, 'VPThScr'])
 
-MWater = 18
-R = 8.314*pow(10,3)
+MWater = float(df.at[i, 'MWater'])
+R = float(df.at[i, 'R'])
 KThScr = float(df.at[i, 'KThScr'])
 TOut = float(df.at[i, 'TOut'])
 p_Mean_Air = float(df.at[i, 'p_Mean_Air'])
@@ -192,8 +192,13 @@ fVentSide = cal_fVentSide(nInsScr, ppfVentSide, fleakage, UThScr, ppfVentRoofSid
 UVentForced = float(df.at[i, 'UVentForced'])
 phiVentForced = float(df.at[i, 'phiVentForced'])
 fVentForced = cal_fVentForced(nInsScr, UVentForced, phiVentForced, AFlr)
-
-HECMechAir = float(df.at[i, 'HECMechAir'])
+UMechCool = float(df.at[i, 'UMechCool'])
+COPMechCool = float(df.at[i, 'COPMechCool'])
+PMechCool = float(df.at[i, 'PMechCool'])
+TMechCool = float(df.at[i, 'TMechCool'])
+VPAir = float(df.at[i, 'VPAir'])
+VPMechCool = float(df.at[i, 'VPMechCool'])
+HECAirMech = cal_HECAirMech(UMechCool,COPMechCool,PMechCool,AFlr,TAir,TMechCool,delta_H,VPAir,VPMechCool)
 VPMech = float(df.at[i, 'VPMech'])
 capVPAir = float(df.at[i, 'capVPAir'])
 MWater = 18
@@ -220,7 +225,7 @@ def dxVPAir(VPAir, VPTop):
     MVBlowAir = cal_MVBlowAir(nHeatVap, UBlow, PBlow, AFlr)
     MVAirOut = cal_MVAirOut(MWater,R,fVentSide,fVentForced,VPAir,VPTop,TAir,TTop)
     MVAirOut_Pad = cal_MVAirOut_Pad(fPad,MWater,R,VPAir,TAir)
-    MVAirMech = cal_MVAirMech(HECMechAir,VPAir,VPMech)
+    MVAirMech = cal_MVAirMech(HECAirMech,VPAir,VPMech)
     return (MVCanAir+MVPadAir+MVFogAir+MVBlowAir-MVAirThScr-MVAirTop-MVAirOut-MVAirOut_Pad-MVAirMech)/capVPAir
 
 def dxVPTop(VPAir, VPTop):

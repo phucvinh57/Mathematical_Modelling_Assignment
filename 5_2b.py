@@ -230,4 +230,3 @@ def dxVPTop(VPAir, VPTop):
     MVAirTop = cal_MVAirTop(MWater,R,fThScr, VPAir, VPTop,TAir,TTop)
     MVTopCov_in = cal_HECTopCov_in(cHECin,TTop,TCov_in,ACov,AFlr)
     return (MVAirTop-MVTopCov_in-MVTopOut)/capVPTop
-

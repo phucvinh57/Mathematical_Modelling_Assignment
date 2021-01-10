@@ -136,7 +136,7 @@ def cal_MCAirCan(P, R, CBuf, CMaxBuf):
 
 i = 0
 # Read data from excel file
-data = pd.read_excel("data.xlsx")
+data = pd.read_excel("data_4.xlsx")
 df = pd.DataFrame(data)
 nHeatCO2 = float(df.at[i, "nHeatCO2"])
 UBlow = float(df.at[i, "UBlow"])

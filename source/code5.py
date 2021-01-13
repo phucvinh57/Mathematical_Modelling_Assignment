@@ -1,6 +1,7 @@
 import math
 from math import sqrt
 import pandas as pd
+from xlsxwriter import Workbook
 
 # f''VentRoof
 def cal_ppfVentRoof(Cd, URoof, ARoof, AFlr, g, hVent, TAir, TOut, Cw, vWind):
@@ -126,91 +127,90 @@ def cal_HECTopCov_in(cHECin, TTop, TCov_in, ACov, AFlr): #use for formula 12
     return cHECin * pow(TTop - TCov_in, 0.33) * ACov / AFlr
 
 ##########   START READING DATA   ##########
-i = int(input())
 
-data = pd.read_excel("data_VP.xlsx")
+data = pd.read_excel("data_in\data_5.xlsx")
 df = pd.DataFrame(data)
 
 rb = 275
-CO2Air = float(df.at[i, 'CO2Air'])
-pAir = float(df.at[i, 'pAir'])
-LAI = float(df.at[i, 'LAI'])
-VPCan = float(df.at[i, 'VPCan'])
-R_Can = float(df.at[i, 'RCan'])
+CO2Air = float(df.at[0, 'CO2Air'])
+pAir = float(df.at[0, 'pAir'])
+LAI = float(df.at[0, 'LAI'])
+VPCan = float(df.at[0, 'VPCan'])
+R_Can = float(df.at[0, 'RCan'])
 delta_H = 2450000
 y = 65.8
 c_p_Air = 1000
 
-UPad = float(df.at[i, 'UPad'])
-phiPad = float(df.at[i, 'phiPad'])
-AFlr = float(df.at[i, 'AFlr'])
+UPad = float(df.at[0, 'UPad'])
+phiPad = float(df.at[0, 'phiPad'])
+AFlr = float(df.at[0, 'AFlr'])
 fPad = UPad*phiPad/AFlr
-nPad = float(df.at[i, 'nPad'])
-xPad = float(df.at[i, 'xPad'])
-xOut = float(df.at[i, 'xOut'])
+nPad = float(df.at[0, 'nPad'])
+xPad = float(df.at[0, 'xPad'])
+xOut = float(df.at[0, 'xOut'])
 
-UFog = float(df.at[i, 'UFog'])
+UFog = float(df.at[0, 'UFog'])
 phiFog = 1.39
 
 nHeatVap = 4.43*pow(10,-8)
-UBlow = float(df.at[i, 'UBlow'])
-PBlow = float(df.at[i, 'PBlow'])
+UBlow = float(df.at[0, 'UBlow'])
+PBlow = float(df.at[0, 'PBlow'])
 
-UThScr = float(df.at[i, 'UThScr'])
-TAir = float(df.at[i, 'TAir'])
-TThScr = float(df.at[i, 'TThScr'])
+UThScr = float(df.at[0, 'UThScr'])
+TAir = float(df.at[0, 'TAir'])
+TThScr = float(df.at[0, 'TThScr'])
 HECAirThScr = 1.7*UThScr*pow(abs(TAir - TThScr), 0.33)
-VPThScr = float(df.at[i, 'VPThScr'])
+VPThScr = float(df.at[0, 'VPThScr'])
 
-MWater = float(df.at[i, 'MWater'])
-R = float(df.at[i, 'R'])
-KThScr = float(df.at[i, 'KThScr'])
-TOut = float(df.at[i, 'TOut'])
-p_Mean_Air = float(df.at[i, 'p_Mean_Air'])
-pOut = float(df.at[i, 'pOut'])
-g = float(df.at[i, 'g'])
+MWater = float(df.at[0, 'MWater'])
+R = float(df.at[0, 'R'])
+KThScr = float(df.at[0, 'KThScr'])
+TOut = float(df.at[0, 'TOut'])
+p_Mean_Air = float(df.at[0, 'p_Mean_Air'])
+pOut = float(df.at[0, 'pOut'])
+g = float(df.at[0, 'g'])
 fThScr = UThScr*KThScr*pow(abs(TAir - TOut), 0.66)+(1-UThScr)/p_Mean_Air*pow((0.5*p_Mean_Air*(1-UThScr)*g*abs(pAir-pOut)),0.5)
-TTop = float(df.at[i, 'TTop'])
-sInsScr = float(df.at[i, 'sInsScr'])
+TTop = float(df.at[0, 'TTop'])
+sInsScr = float(df.at[0, 'sInsScr'])
 nInsScr = cal_nInsScr(sInsScr)
-Cd = float(df.at[i, 'Cd'])
-USide = float(df.at[i, 'USide'])
-ASide = float(df.at[i, 'ASide'])
-vWind = float(df.at[i, 'vWind'])
-Cw = float(df.at[i, 'Cw'])
-URoof = float(df.at[i, 'URoof'])
-ARoof = float(df.at[i, 'ARoof'])
-hSideRoof = float(df.at[i, 'hSideRoof'])
+Cd = float(df.at[0, 'Cd'])
+USide = float(df.at[0, 'USide'])
+ASide = float(df.at[0, 'ASide'])
+vWind = float(df.at[0, 'vWind'])
+Cw = float(df.at[0, 'Cw'])
+URoof = float(df.at[0, 'URoof'])
+ARoof = float(df.at[0, 'ARoof'])
+hSideRoof = float(df.at[0, 'hSideRoof'])
 ppfVentSide = cal_ppfVentSide(Cd,USide,ASide,vWind,AFlr,Cw)
-cleakage = float(df.at[i, 'cleakage'])
+cleakage = float(df.at[0, 'cleakage'])
 fleakage = cal_fleakage(cleakage, vWind) 
 ppfVentRoofSide = cal_ppfVentRoofSide(Cd,AFlr,URoof,USide,ARoof,ASide,g,hSideRoof,TAir,TOut,Cw,vWind)
-nSide = float(df.at[i, 'nSide'])
-nSide_Thr = float(df.at[i, 'nSide_Thr'])
+nSide = float(df.at[0, 'nSide'])
+nSide_Thr = float(df.at[0, 'nSide_Thr'])
 fVentSide = cal_fVentSide(nInsScr, ppfVentSide, fleakage, UThScr, ppfVentRoofSide, nSide, nSide_Thr)
 
-UVentForced = float(df.at[i, 'UVentForced'])
-phiVentForced = float(df.at[i, 'phiVentForced'])
+UVentForced = float(df.at[0, 'UVentForced'])
+phiVentForced = float(df.at[0, 'phiVentForced'])
 fVentForced = cal_fVentForced(nInsScr, UVentForced, phiVentForced, AFlr)
-UMechCool = float(df.at[i, 'UMechCool'])
-COPMechCool = float(df.at[i, 'COPMechCool'])
-PMechCool = float(df.at[i, 'PMechCool'])
-TMechCool = float(df.at[i, 'TMechCool'])
-VPAir = float(df.at[i, 'VPAir'])
-VPTop = float(df.at[i, 'VPTop'])
-VPOut = float(df.at[i, 'VPOut'])
-VPMechCool = float(df.at[i, 'VPMechCool'])
+UMechCool = float(df.at[0, 'UMechCool'])
+COPMechCool = float(df.at[0, 'COPMechCool'])
+PMechCool = float(df.at[0, 'PMechCool'])
+TMechCool = float(df.at[0, 'TMechCool'])
+VPAir = float(df.at[0, 'VPAir'])
+VPTop = float(df.at[0, 'VPTop'])
+VPOut = float(df.at[0, 'VPOut'])
+VPMechCool = float(df.at[0, 'VPMechCool'])
 HECAirMech = cal_HECAirMech(UMechCool,COPMechCool,PMechCool,AFlr,TAir,TMechCool,delta_H,VPAir,VPMechCool)
-VPMech = float(df.at[i, 'VPMech'])
-capVPAir = float(df.at[i, 'capVPAir'])
-cHECin = float(df.at[i, 'cHECin'])
-TCov_in = float(df.at[i, 'TCov_in'])
-ACov = float(df.at[i, 'ACov'])
-nRoof = float(df.at[i, 'nRoof'])
-nRoof_Thr = float(df.at[i, 'nRoof_Thr'])
-hVent = float(df.at[i, 'hVent'])
-
-capVPTop = float(df.at[i, 'capVPTop'])
+VPMech = float(df.at[0, 'VPMech'])
+capVPAir = float(df.at[0, 'capVPAir'])
+cHECin = float(df.at[0, 'cHECin'])
+TCov_in = float(df.at[0, 'TCov_in'])
+ACov = float(df.at[0, 'ACov'])
+nRoof = float(df.at[0, 'nRoof'])
+nRoof_Thr = float(df.at[0, 'nRoof_Thr'])
+hVent = float(df.at[0, 'hVent'])
+VPCov_in = float(df.at[0, 'VPCov_in'])
+capVPTop = float(df.at[0, 'capVPTop'])
 ##########   END READING DATA   ##########
 
 ###### Calculate dx ######
@@ -233,5 +233,102 @@ def dxVPTop(VPAir, VPTop):
     fVentRoof = cal_fVentRoof(nInsScr,fleakage,UThScr,ppfVentRoofSide,nRoof,nSide,nRoof_Thr,ppfVentRoof)
     MVTopOut = cal_MVTopOut(MWater,R,fVentRoof,VPTop,VPOut,TTop,TOut)
     MVAirTop = cal_MVAirTop(MWater,R,fThScr, VPAir, VPTop,TAir,TTop)
-    MVTopCov_in = cal_HECTopCov_in(cHECin,TTop,TCov_in,ACov,AFlr)
+    HECTopCov_in = cal_HECTopCov_in(cHECin,TTop,TCov_in,ACov,AFlr)
+    MVTopCov_in = cal_MVTopCov_in(HECTopCov_in,VPTop,VPCov_in)
+
     return (MVAirTop-MVTopCov_in-MVTopOut)/capVPTop
+
+def euler(VPAir, VPTop, h, time):
+    n = int(time/h)
+    VPAir_0 = VPAir
+    VPTop_0 = VPTop
+
+    for idx in range(1, n + 1):
+        k = h * dxVPAir(VPAir_0, VPTop_0)
+        t = h * dxVPTop(VPAir_0, VPTop_0)
+
+        VPAir_0 += k
+        VPTop_0 += t
+
+        if idx % 300 == 0:
+            row = idx // 300
+            worksheet.write(row+1, 0, idx)
+            worksheet.write(row + 1, 1, VPAir_0)
+            worksheet.write(row + 1, 2, VPTop_0)
+            global TAir, TTop, TOut, vWind, URoof, CO2Air
+            TAir = float(df.at[row, 'TAir'])
+            TTop= float(df.at[row, 'TTop'])
+            TOut = float(df.at[row, 'TOut'])
+            vWind = float(df.at[row, 'vWind'])
+            URoof= float(df.at[row, 'URoof'])
+            CO2Air = float(df.at[row, 'CO2Air'])
+
+    return VPAir_0, VPTop_0
+
+
+# Explicit Runge-Kutta 4th order
+def rk4(VPAir, VPTop, h, time):
+    n = int(time/h)
+    VPAir_0 = VPAir
+    VPTop_0 = VPTop
+
+    for idx in range(1, n + 1):
+        k1 = h * dxVPAir(VPAir_0, VPTop_0)
+        t1 = h * dxVPTop(VPAir_0, VPTop_0)
+        k2 = h * dxVPAir(VPAir_0 + 0.5 * k1, VPTop_0 + 0.5 * k1)
+        t2 = h * dxVPTop(VPAir_0 + 0.5 * t1, VPTop_0 + 0.5 * t1)
+        k3 = h * dxVPAir(VPAir_0 + 0.5 * k2, VPTop_0 + 0.5 * k2)
+        t3 = h * dxVPTop(VPAir_0 + 0.5 * t2, VPTop_0 + 0.5 * t2)
+        k4 = h * dxVPAir(VPAir_0 + k3, VPTop_0 + k3)
+        t4 = h * dxVPTop(VPAir_0 + t3, VPTop_0 + t3)
+
+        VPAir_0 += (1.0 / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
+        VPTop_0 += (1.0 / 6.0) * (t1 + 2 * t2 + 2 * t3 + t4)
+
+        if idx % 300 == 0:
+            row = idx // 300
+            worksheet.write(row + 1, 4, VPAir_0)
+            worksheet.write(row + 1, 5, VPTop_0)
+            global TAir, TTop, TOut, vWind, URoof, CO2Air
+            TAir = float(df.at[row, 'TAir'])
+            TTop= float(df.at[row, 'TTop'])
+            TOut = float(df.at[row, 'TOut'])
+            vWind = float(df.at[row, 'vWind'])
+            URoof= float(df.at[row, 'URoof'])
+            CO2Air = float(df.at[row, 'CO2Air'])
+
+    return VPAir_0, VPTop_0
+
+def main():
+    print('Place: ', df.at[0, 'Place'])
+    print('VPAir_0: ', VPAir)
+    print('VPTop_0: ', VPTop)
+
+    step = float(input('Input step: '))
+    time = float(input('Input time: '))
+
+    worksheet.write(0, 0, 'time')
+    worksheet.write(0, 1, 'VPAir_euler')
+    worksheet.write(0, 2, 'VPTop_euler')
+    worksheet.write(0, 4, 'VPAir_rk4')
+    worksheet.write(0, 5, 'VPTop_rk4')
+    worksheet.write(1, 0, 0)
+    worksheet.write(1, 1, VPAir)
+    worksheet.write(1, 2, VPTop)
+    worksheet.write(1, 4, VPAir)
+    worksheet.write(1, 5, VPTop)
+
+    air, top = euler(VPAir, VPTop, step, time)
+    print('\nExplicit Euler')
+    print('The VPAir: ', round(air, 10))
+    print('The VPTop: ', round(top, 10))
+
+    air, top = rk4(VPAir, VPTop, step, time)
+    print('\nExplicit Runge-Kutta 4th order')
+    print('The VPAir: ', round(air, 10))
+    print('The VPTop: ', round(top, 10))
+
+wb = Workbook('data_out\Output_5.xlsx')
+worksheet = wb.add_worksheet()
+main()
+wb.close()

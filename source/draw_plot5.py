@@ -4,26 +4,26 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-def msg(a):
+def mse(a):
     n = 0
-    for idx in range(0, 2013):
+    for idx in range(0, nRow):
         n += math.pow((float(df.at[idx, a]) - float(de.at[idx, 'VPAir_Real'])),2)
-    return n/2013
+    return n/nRow
 
-data = pd.read_excel("Output_5.xlsx")
+data = pd.read_excel("data_out\Output_5.xlsx")
 df = pd.DataFrame(data)
-da = pd.read_excel("data_5.xlsx")
+da = pd.read_excel("data_in\data_5.xlsx")
 de = pd.DataFrame(da)
 time = df[['time']]
 euler_vpair = df[['VPAir_euler']]
 real_vpair = de[['VPAir_Real']]
 rk4_vpair = df[['VPAir_rk4']]
-
-print(msg('VPAir_euler'))
-print(msg('VPAir_rk4'))
+nRow = len(df.index)
+print(mse('VPAir_euler'))
+print(mse('VPAir_rk4'))
 
 plt.plot(time, euler_vpair, label='Euler')
-plt.plot(time, real_vpair , label='Thực Tế')
+plt.plot(time, real_vpair[:nRow] , label='Thực Tế')
 plt.xlabel('Time')
 plt.ylabel('VPAir')
 plt.title("Biểu đồ VPAir đo bằng phương pháp Euler và VPAir thực tế")
@@ -31,7 +31,7 @@ plt.legend(loc='best')
 plt.show()
 
 plt.plot(time, rk4_vpair, 'b' , label='RK4')
-plt.plot(time, real_vpair, 'r' ,label='Thực Tế')
+plt.plot(time, real_vpair[:nRow], 'r' ,label='Thực Tế')
 plt.xlabel('Time')
 plt.ylabel('VPAir')
 plt.title("Biểu đồ VPAir đo bằng phương pháp RK4 và VPAir thực tế")

@@ -64,8 +64,8 @@ def cal_fThScr(UThScr, KThScr, TAir, TTop, g, pAir, pTop): # use for formula 6
     return a + b
 
 # formula 8
-def cal_MVAirOut(MWater, R, fVentSide, fVentForced, VPAir, VPTop, TAir, TTop):
-    return (MWater / R) * (fVentSide + fVentForced) * (VPAir / TAir - VPTop / TTop)
+def cal_MVAirOut(MWater, R, fVentSide, fVentForced, VPAir, VPOut, TAir, TOut):
+    return (MWater / R) * (fVentSide + fVentForced) * (VPAir / TAir - VPOut / TOut)
 def cal_fVentSide(nInsScr, ppfVentSide, fleakage, UThScr, ppfVentRoofSide, nSide, nSide_Thr):  # use for formula 8
     if nSide >= nSide_Thr:
         return nInsScr * ppfVentSide + 0.5 * fleakage
@@ -92,8 +92,8 @@ def cal_fleakage(cleakage, vWind):
         return vWind * cleakage
 
 # formula 9
-def cal_MVTopOut(MWater, R, fVentRoof, VPAir, VPTop, TAir, TTop):
-    return (MWater / R) * fVentRoof * (VPAir / TAir - VPTop / TTop)
+def cal_MVTopOut(MWater, R, fVentRoof, VPTop, VPOut, TTop, TOut):
+    return (MWater / R) * fVentRoof * (VPTop / TTop - VPOut / TOut)
 def cal_fVentRoof(nInsScr, fleakage, UThScr, ppfVentRoofSide, nRoof, nSide, nRoof_Thr, ppfVentRoof): # use for formula 9
     # nRoof_Thr la nguong Stack
     if nRoof >= nRoof_Thr:
@@ -197,6 +197,8 @@ COPMechCool = float(df.at[i, 'COPMechCool'])
 PMechCool = float(df.at[i, 'PMechCool'])
 TMechCool = float(df.at[i, 'TMechCool'])
 VPAir = float(df.at[i, 'VPAir'])
+VPTop = float(df.at[i, 'VPTop'])
+VPOut = float(df.at[i, 'VPOut'])
 VPMechCool = float(df.at[i, 'VPMechCool'])
 HECAirMech = cal_HECAirMech(UMechCool,COPMechCool,PMechCool,AFlr,TAir,TMechCool,delta_H,VPAir,VPMechCool)
 VPMech = float(df.at[i, 'VPMech'])
@@ -221,7 +223,7 @@ def dxVPAir(VPAir, VPTop):
     MVAirTop = cal_MVAirTop(MWater,R,fThScr, VPAir, VPTop,TAir,TTop)
     MVAirThScr = cal_MVAirThScr(HECAirThScr, VPAir, VPThScr)
     MVBlowAir = cal_MVBlowAir(nHeatVap, UBlow, PBlow, AFlr)
-    MVAirOut = cal_MVAirOut(MWater,R,fVentSide,fVentForced,VPAir,VPTop,TAir,TTop)
+    MVAirOut = cal_MVAirOut(MWater,R,fVentSide,fVentForced,VPAir,VPOut,TAir,TOut)
     MVAirOut_Pad = cal_MVAirOut_Pad(fPad,MWater,R,VPAir,TAir)
     MVAirMech = cal_MVAirMech(HECAirMech,VPAir,VPMech)
     return (MVCanAir+MVPadAir+MVFogAir+MVBlowAir-MVAirThScr-MVAirTop-MVAirOut-MVAirOut_Pad-MVAirMech)/capVPAir
@@ -229,7 +231,7 @@ def dxVPAir(VPAir, VPTop):
 def dxVPTop(VPAir, VPTop):
     ppfVentRoof = cal_ppfVentRoof(Cd,URoof,ARoof,AFlr,g,hVent,TAir,TOut,Cw,vWind)
     fVentRoof = cal_fVentRoof(nInsScr,fleakage,UThScr,ppfVentRoofSide,nRoof,nSide,nRoof_Thr,ppfVentRoof)
-    MVTopOut = cal_MVTopOut(MWater,R,fVentRoof,VPAir,VPTop,TAir,TTop)
+    MVTopOut = cal_MVTopOut(MWater,R,fVentRoof,VPTop,VPOut,TTop,TOut)
     MVAirTop = cal_MVAirTop(MWater,R,fThScr, VPAir, VPTop,TAir,TTop)
     MVTopCov_in = cal_HECTopCov_in(cHECin,TTop,TCov_in,ACov,AFlr)
     return (MVAirTop-MVTopCov_in-MVTopOut)/capVPTop

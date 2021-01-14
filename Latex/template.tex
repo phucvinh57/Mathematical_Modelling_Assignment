@@ -145,27 +145,54 @@ FACULTY OF COMPUTER SCIENCE AND ENGINEERING
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Member list \& Workload}
 
-\begin{center}
-\begin{tabular}{|c|c|c|l|c|}
+
+\begin{table}[ht]
+\begin{tabular}{|c|c|c|l|}
 \hline
-\textbf{No.} & \textbf{Fullname} & \textbf{Student ID} & \textbf{Problems} & \textbf{Percentage of work}\\
+\textbf{No.} & \textbf{Fullname} & \textbf{Student ID} & \textbf{Problems} \\
 \hline 
 %%%%%Student 1%%%%%%%%%%
-\multirow{3}{*}{1} & \multirow{3}{*}{Nguyễn Phúc Vinh (Nhóm trưởng)} & \multirow{3}{*}{1915940} & - Bài 1a, 1b &
-\multirow{3}{*}{30\%}\\
-& &  & - Bài2b(code các công thức 3-7, 9-11, code 2 hàm dx)\\
+\multirow{3}{*}{1} & \multirow{3}{*}{Nguyễn Phúc Vinh} & \multirow{3}{*}{1915940} & - Bài 1a, 1b \\
+& &  & - Bài2b (code các công thức 3-7, 9-11, \\
+& & & code 2 hàm dx)\\
 & &  & - Bài 3 (Thu thập số liệu và chạy thử)\\
-& &  & - Bài 5\_2b (Code các công thức tính toán cần thiết)\\
-& &  & - Quản lí tiến độ công việc của các thành viên\\
+& &  & - Bài 5\_2b (Code các công thức tính \\
+& &  & toán cần thiết)\\
+& &  & - Quản lí tiến độ công việc của\\
+& &  & các thành viên\\
 \hline 
 %%%%%Student 2%%%%%%%%%%%
-\multirow{3}{*}{2} & \multirow{3}{*}{Cao Thanh Bình} & \multirow{3}{*}{1912715} & - Relation \& Counting: 4, 5, 6& \multirow{3}{*}{20\%}\\
- & &  & Bonus: 4, 5, 6. &\\
- & &  & - Graph: 1, 2, 3, Bonus: 1, 2, 3. &\\
+\multirow{3}{*}{2} & \multirow{3}{*}{Cao Thanh Bình} & \multirow{3}{*}{1912715} & - Bài 1a, 1b \\
+& &  & - Tìm hiểu phần 4 để tính toán công \\
+& &  & thức (18) trong bài 2b\\
+& &  & - Bài 5\_2b (Code 2 hàm dx)\\
+& &  & - Bài 5\_3 (Thu thập số liệu và chạy thử)\\
 \hline
 %%%%%Student 3%%%%%%%%%%%
+\multirow{3}{*}{3} & \multirow{3}{*}{Lê Thanh An} & \multirow{3}{*}{1912523} & - Bài 1c, 1d, 1e (liên quan đến giải \\
+& &  & thuật Euler)\\
+& &  & - Bài 4 (liên quan đến giải thuật Euler)\\
+& &  & - Bài 5\_4 (liên quan đến giải thuật Euler)\\
+\hline
+%%%%%Student 4%%%%%%%%%%%
+\multirow{3}{*}{4} & \multirow{3}{*}{Lê Hồ Long} & \multirow{3}{*}{1913990} & - Bài 1c, 1d, 1e (liên quan đến giải thuật\\ 
+& & &Runge-Kutta 4) \\
+& &  & - Bài 4 (liên quan đến giải thuật \\
+& & &Runge-Kutta 4)\\
+& &  & - Bài 5\_4 (liên quan đến giải thuật \\
+& & &Runge-kutta 4)\\
+\hline
+%%%%%Student 5%%%%%%%%%%%
+\multirow{3}{*}{5} & \multirow{3}{*}{Nguyễn Hữu Kiệt} & \multirow{3}{*}{1812729} &
+-Bài 2a (trình bày lại mô hình \\
+& & &với nồng độ khí $CO_2$)\\
+& & &-Bài 2b (code các công thức 12 - 18)\\
+& & &-Bài 5 (trình bày lại mô hình \\
+& & &đối với hơi nước)\\
+
+\hline
 \end{tabular}
-\end{center}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Phần kiến thức chuẩn bị (Bài 1)}
@@ -907,43 +934,43 @@ nHeatCO2 = float(df.at[i, "nHeatCO2"])
 UBlow = float(df.at[i, "UBlow"])
 PBlow = float(df.at[i, 'PBlow'])
 AFlr = float(df.at[i, 'AFlr'])
-UExtCO2 = float(df.at[0, 'UExtCO2'])
-phiExtCO2 = float(df.at[0, 'phiExtCO2'])
-UPad = float(df.at[0, 'UPad'])
-phiPad = float(df.at[0, 'phiPad'])
-CO2Out = float(df.at[0, 'CO2Out'])
-LAI = float(df.at[0, 'LAI'])
-CBuf = float(df.at[0, 'CBuf'])
-CMax_Buf = float(df.at[0, 'CMax_Buf'])
-UThScr = float(df.at[0, 'UThScr'])
-KThScr = float(df.at[0, 'KThScr'])
-TAir = float(df.at[0, 'TAir'])
-TTop = float(df.at[0, 'TTop'])
-g = float(df.at[0, 'g'])
-pAir = float(df.at[0, 'pAir'])
-pTop = float(df.at[0, 'pTop'])
-cleakage = float(df.at[0, 'cleakage'])
-vWind = float(df.at[0, 'vWind'])
-Cd = float(df.at[0, 'Cd'])
-URoof = float(df.at[0, 'URoof'])
-USide = float(df.at[0, 'USide'])
-ARoof = float(df.at[0, 'ARoof'])
-ASide = float(df.at[0, 'ASide'])
-hSideRoof = float(df.at[0, 'hSideRoof'])
-TOut = float(df.at[0, 'TOut'])
-Cw = float(df.at[0, 'Cw'])
-nSide = float(df.at[0, 'nSide'])
-nSide_Thr = float(df.at[0, 'nSide_Thr'])
-sInsScr = float(df.at[0, 'sInsScr'])
-UVentForced = float(df.at[0, 'UVentForced'])
-phiVentForced = float(df.at[0, 'phiVentForced'])
-capCO2Air = float(df.at[0, 'capCO2Air'])
-hVent = float(df.at[0, 'hVent'])
-nRoof = float(df.at[0, 'nRoof'])
-nRoof_Thr = float(df.at[0, 'nRoof_Thr'])
-capCO2Top = float(df.at[0, 'capCO2Top'])
-CO2Air = float(df.at[0, 'CO2Air'])
-CO2Top = float(df.at[0, 'CO2Top'])
+UExtCO2 = float(df.at[i, 'UExtCO2'])
+phiExtCO2 = float(df.at[i, 'phiExtCO2'])
+UPad = float(df.at[i, 'UPad'])
+phiPad = float(df.at[i, 'phiPad'])
+CO2Out = float(df.at[i, 'CO2Out'])
+LAI = float(df.at[i, 'LAI'])
+CBuf = float(df.at[i, 'CBuf'])
+CMax_Buf = float(df.at[i, 'CMax_Buf'])
+UThScr = float(df.at[i, 'UThScr'])
+KThScr = float(df.at[i, 'KThScr'])
+TAir = float(df.at[i, 'TAir'])
+TTop = float(df.at[i, 'TTop'])
+g = float(df.at[i, 'g'])
+pAir = float(df.at[i, 'pAir'])
+pTop = float(df.at[i, 'pTop'])
+cleakage = float(df.at[i, 'cleakage'])
+vWind = float(df.at[i, 'vWind'])
+Cd = float(df.at[i, 'Cd'])
+URoof = float(df.at[i, 'URoof'])
+USide = float(df.at[i, 'USide'])
+ARoof = float(df.at[i, 'ARoof'])
+ASide = float(df.at[i, 'ASide'])
+hSideRoof = float(df.at[i, 'hSideRoof'])
+TOut = float(df.at[i, 'TOut'])
+Cw = float(df.at[i, 'Cw'])
+nSide = float(df.at[i, 'nSide'])
+nSide_Thr = float(df.at[i, 'nSide_Thr'])
+sInsScr = float(df.at[i, 'sInsScr'])
+UVentForced = float(df.at[i, 'UVentForced'])
+phiVentForced = float(df.at[i, 'phiVentForced'])
+capCO2Air = float(df.at[i, 'capCO2Air'])
+hVent = float(df.at[i, 'hVent'])
+nRoof = float(df.at[i, 'nRoof'])
+nRoof_Thr = float(df.at[i, 'nRoof_Thr'])
+capCO2Top = float(df.at[i, 'capCO2Top'])
+CO2Air = float(df.at[i, 'CO2Air'])
+CO2Top = float(df.at[i, 'CO2Top'])
 
 # formular 1
 def dxCO2Air(CO2Air, CO2Top):
@@ -1054,21 +1081,113 @@ print("dxCO2Top = ", dxCO2Top(CO2Air, CO2Top))
 \subsection{Bài 4}
 Source trích từ $source\textbackslash code2\_4.py$\\
 \textbf{a)} Dựa trên cơ sở lý thuyết của phương phép Euler và Runge-Kutta bậc 4 đã nêu ở trên, chúng tôi đã tạo ra các Solver chạy bằng ngôn ngữ Python để dự đoán kết quả của mô hình.\\
-Với các tham số đầu vào là $CO2Air\_0$(giá trị tại thời điểm t của CO2Air), $CO2Top\_0$(giá trị tại thời điểm t của CO2Top), $h$(kích thước bước sấp xỉ), $time$(thời điểm t cần tính giá trị của CO2Air và CO2Top)
+Với các tham số đầu vào là $CO2Air$(giá trị tại thời điểm t của CO2Air), $CO2Top$(giá trị tại thời điểm t của CO2Top), $h$(kích thước bước sấp xỉ), $time$(thời điểm t cần tính giá trị của CO2Air và CO2Top)
 
 \begin{minted}{python}
+def euler(CO2Air, CO2Top, h, time):
+    n = int(time/h)
+    CO2Air_0 = CO2Air
+    CO2Top_0 = CO2Top
+
+    for idx in range(1, n + 1):
+        k = h * dxCO2Air(CO2Air_0, CO2Top_0)
+        t = h * dxCO2Top(CO2Air_0, CO2Top_0)
+
+        CO2Air_0 += k
+        CO2Top_0 += t
+
+        if idx % 300 == 0:
+            row = idx // 300
+            worksheet.write(row + 1, 0, idx)
+            worksheet.write(row + 1, 1, CO2Air_0)
+            worksheet.write(row + 1, 2, CO2Top_0)
+            global TAir, TTop, TOut, vWind, URoof
+            TAir = float(df.at[row, 'TAir'])
+            TTop = float(df.at[row, 'TTop'])
+            TOut = float(df.at[row, 'TOut'])
+            vWind = float(df.at[row, 'vWind'])
+            URoof = float(df.at[row, 'URoof'])
+
+    return CO2Air_0, CO2Top_0
 
 
-\end{minted}
-    \textit{Note: } các biến như vận tốc gió(vWind), nhiệt độ(TAir, TTOP, TOut), URoof (tính thông qua ventWind và ventLee) thay đổi sau mỗi 5 phút nên cần cập nhật chúng trong quá trình tính toán .
-\textbf{b)}
-Với các Solver ở trên, ta tính được giá trị xấp xỉ của $CO2Air$ và $CO2Top$ tại thời điểm t đúng 5 phút, 10 phút, 15 phút,....
-\begin{minted}{python}
-############## main ##############
+def rk4(CO2Air, CO2Top, h, time):
+    n = int(time/h)
+    CO2Air_0 = CO2Air
+    CO2Top_0 = CO2Top
+
+    for idx in range(1, n + 1):
+        k1 = h * dxCO2Air(CO2Air_0, CO2Top_0)
+        t1 = h * dxCO2Top(CO2Air_0, CO2Top_0)
+        k2 = h * dxCO2Air(CO2Air_0+0.5*k1, CO2Top_0+0.5*k1)
+        t2 = h * dxCO2Top(CO2Air_0+0.5*t1, CO2Top_0+0.5*t1)
+        k3 = h * dxCO2Air(CO2Air_0+0.5*k2, CO2Top_0+0.5*k2)
+        t3 = h * dxCO2Top(CO2Air_0+0.5*t2, CO2Top_0+0.5*t2)
+        k4 = h * dxCO2Air(CO2Air_0+k3, CO2Top_0+k3)
+        t4 = h * dxCO2Top(CO2Air_0+t3, CO2Top_0+t3)
+
+        CO2Air_0 += (1.0/6.0) * (k1+2*k2+2*k3+k4)
+        CO2Top_0 += (1.0/6.0) * (t1+2*t2+2*t3+t4)
+
+        if idx % 300 == 0:
+            row = idx // 300
+            worksheet.write(row + 1, 4, CO2Air_0)
+            worksheet.write(row + 1, 5, CO2Top_0)
+            global TAir, TTop, TOut, vWind, URoof
+            TAir = float(df.at[row, 'TAir'])
+            TTop = float(df.at[row, 'TTop'])
+            TOut = float(df.at[row, 'TOut'])
+            vWind = float(df.at[row, 'vWind'])
+            URoof = float(df.at[row, 'URoof'])
+
+    return CO2Air_0, CO2Top_0
 
 \end{minted}
 \\
-Các tham số đầu vào được đọc từ file $data\_4.xslx$. Nhập kích thước bước sấp sỉ (h) là 1 (s) từ bàn phím. Nhập thời điểm t (time) là 603600 (s) tương ứng 1 tuần. Giá trị $CO2Air$ và $CO2Top$ tính được sau mỗi 300s sẽ được ghi vào file $Output\_4.xslx$.
+    \textit{Note: } các biến như vận tốc gió(vWind), nhiệt độ(TAir, TTop, TOut), URoof (tính thông qua ventWind và ventLee) thay đổi sau mỗi 5 phút nên cần cập nhật chúng trong quá trình tính toán .
+\\\\
+\textbf{b)}
+Với các Solver ở trên, ta tính được giá trị xấp xỉ của $CO2Air$ và $CO2Top$ tại thời điểm t đúng 5 phút, 10 phút, 15 phút,....
+\\\\
+\textbf{Dữ liệu được đọc từ file $data\_in\textbackslash data\_4.xlsx$} \\
+\begin{minted}{python}
+############## main ##############
+def main():
+    print(df.at[0, 'Place'])
+    print('CO2Air_0: ', CO2Air)
+    print('CO2Top_0: ', CO2Top)
+
+    step = float(input('Input step: '))
+    time = float(input('Input time: '))
+
+    air, top = euler(CO2Air, CO2Top, step, time)
+    print('\nExplicit Euler')
+    print('The CO2Air: ', round(air, 10))
+    print('The CO2Top: ', round(top, 10))
+
+    air, top = rk4(CO2Air, CO2Top, step, time)
+    print('\nExplicit Runge-Kutta 4th order')
+    print('The CO2Air: ', round(air, 10))
+    print('The CO2Top: ', round(top, 10))
+
+
+wb = Workbook('data_out\Output_4.xlsx')
+worksheet = wb.add_worksheet()
+worksheet.write(0, 0, 'time')
+worksheet.write(0, 1, 'CO2Air_E')
+worksheet.write(0, 2, 'CO2Top_E')
+worksheet.write(0, 4, 'CO2Air_RK4')
+worksheet.write(0, 5, 'CO2Top_RK4')
+worksheet.write(1, 0, 0)
+worksheet.write(1, 1, CO2Air)
+worksheet.write(1, 2, CO2Top)
+worksheet.write(1, 4, CO2Air)
+worksheet.write(1, 5, CO2Top)
+main()
+wb.close()
+\end{minted}
+\\
+Các tham số đầu vào được đọc từ file $data\_in\textbackslash data\_4.xlsx$. Nhập giá trị i (line of data) là 0 .Nhập kích thước bước sấp sỉ (h) là 1 (s) từ bàn phím. Nhập thời điểm t (time) là 603600 (s) tương ứng 1 tuần. Giá trị $CO2Air$ và $CO2Top$ tính được sau mỗi 300s sẽ được ghi vào file $Output\_4.xslx$.
 \\\\
 Với file $Output\_4.xslx$ ta tính độ chênh lệch của kết quả so với dữ liệu thật được lưu trong file $data\_4.xslx$ thông qua hàm $mse$ (mean squared error) và vẽ đồ thị.
 
@@ -1076,19 +1195,20 @@ Với file $Output\_4.xslx$ ta tính độ chênh lệch của kết quả so v�
 \begin{minted}{python}
 def mse(a):
     n = 0
-    for idx in range(0, 2013):
-        n += math.pow((float(df.at[idx, a]) - float(de.at[idx, 'CO2Air_Real'])),2)
-    return n/2013
+    for idx in range(0, nRow):
+        n += math.pow((float(df.at[idx, a]) - float(de.at[idx, 'CO2Air_real'])),2)
+    return n/nRow
 
-data = pd.read_excel("../data_out/Output_4.xlsx")
+data = pd.read_excel("data_out\Output_4.xlsx")
 df = pd.DataFrame(data)
-da = pd.read_excel("../data_in/data_4.xlsx")
+da = pd.read_excel("data_in\data_4.xlsx")
 de = pd.DataFrame(da)
+nRow = len(df.index)
 
 print(mse('CO2Air_E'))
 print(mse('CO2Air_RK4'))
-\end{minted}\\
-
+\end{minted}
+\\
 Kết quả là :\\
 mse('CO2Air\_E') = 80342.82022615442 (độ lệch của phương pháp Euler)\\
 mse('CO2Air\_RK4') = 80307.17721401696 (độ lệch của phương pháp Runge-Kutta 4)\\
@@ -1139,6 +1259,50 @@ Vì số liệu của các yếu tố bên trong nhà kính dùng để tính $C
     \begin{center}
         $cap_{VP_{Top}} = \dfrac{M_{Water}h_{Top}}{R(T_{Top} + 273.5)}$
     \end{center}
+    
+    \vspace{5mm}
+    
+    Hệ số trao đổi hơi nước giữa không khí và các đối tượng có mối quan hệ tuyến tính với hệ số trao đổi nhiệt đối lưu giữa không khí và các vật thể. Ta có công thức mô tả dòng hơi nước tới đối tượng bằng công thức:
+    \begin{center}
+        $MV_{12} = $
+        \begin{cases}
+            $0$ & $VP_1 < VP_2$ \\
+            $6.4 \cdot 10^{-9} HEC_{12}(VP_1 - VP_2)$ & $VP_1 > VP_2$
+        \end{cases}
+        \hspace{1cm}
+        $[kg m^{-2} s^{-1}]$
+    \end{center}
+    Trong đó:
+    \begin{itemize}
+        \item $MV_{12}$ là thông lượng hơi từ  không khí từ vị trí 1 đến vật thể 2 (kg m$^{-2}$ s$^{-1}$)
+        \item $6.4 \cdot 10^{-9}$ là hệ số chuyển đổi liên quan hệ số trao đổi nhiệt với hệ số trao đổi hơi
+        \item $HEC_{12}$ là hệ số trao đổi nhiệt giữa không khí ở vị trí 1 và đối tượng 2 (W m$^{-2}$ K$^{-1}$)
+        \item $VP_1$ là áp suất hơi nước ở vị trí 1
+        \item $VP_2$ là áp suất hơi nước ở vị trí 2
+    \end{itemize}
+    Vì mô hình chỉ nên bao gồm các phương trình vi phân, nên phương trình trên được chuyển về phương trình vi phân bằng cách sử dụng “hàm số khả vi chuyển đổi”
+    \begin{center}
+        $MV_{12} = \dfrac{1}{1 + exp(s_{MV_{12}}(VP_1 - VP_2))}.6.4 \cdot 10^{-9} HEC_{12}(VP_1 - VP_2)$
+    \end{center}
+    Trong đó:
+    \begin{itemize}
+        \item $s_{MV_{12}}$ là độ dốc của hàm chuyển đổi đối với sự chênh lệch áp suất hơi nước
+    \end{itemize}
+    Ta có thông lượng hơi nước từ gian dưới nhà kính tới màn chắn nhiệt $MV_{AirThScr}$ và từ gian trên tới lớp bao bên trong $MV_{TopCov,in}$ được tính tương tự như công thức trên.
+    
+    \vspace{5mm}
+    
+    Dạng chung cho dòng hơi nước kèm theo không khí được mô tả bới:
+    \begin{center}
+        $MV_{12} = \dfrac{M_{Water}}{R}.f_{12}.\left(\dfrac{VP_1}{T_1 + 273.15} - \dfrac{VP_2}{T_2 + 273.15}\right)$
+    \end{center}
+    Trong đó:
+    \begin{itemize}
+        \item $MV_{12}$ là thông lượng hơi nước từ nơi 1 tới nơi 2
+        \item $f_{12}$ là thông lượng không khí từ nơi 1 tới nơi 2 (m$^3$m$^{-2}$s$^{-1}$)
+        \item $T_1$ và $T_2$ là nhiệt độ ở nơi 1 và nơi 2.
+    \end{itemize}
+    Các dòng hơi nước $MV_{AirTop}$, $MV_{AirOut}$, $MV_{TopOut}$ được mô tả tương tự công thức trên.Theo đó, thông lượng không khí đi kèm theo chúng là $f_{ThScr}$ (thông lượng qua màn chắn nhiệt), $f_{VentSide} + f_{VentForced}$ (thông lượng gió qua cửa và cưỡng bức), $f_{VentRoof}$ là thông lượng gió trên mái.
     
     \vspace{5mm}
     
@@ -1209,7 +1373,7 @@ Vì số liệu của các yếu tố bên trong nhà kính dùng để tính $C
     \end{center}
     Tham số $c_{evap4}$ cũng được tính tương tự như trên.
     
-    \vpsace{5mm}
+    \vspace{5mm}
     
     Dưới đây là công thức để tính $MV_{BlowAir}$ là lượng hơi nước đi từ máy sưởi vào gian dưới nhà kính
     \begin{center}
@@ -1259,11 +1423,11 @@ Vì số liệu của các yếu tố bên trong nhà kính dùng để tính $C
     Trong đó:
     \begin{itemize}
         \item $U_{Fog}$ là độ mở của hệ thống sương mù
-        \item $\phi_{Fog}$ 
+        \item $\phi_{Fog}$ là công suất của hệ thống phun sương(kg waters$^-1$)
     \end{itemize}
 \subsubsubsection{Bài 5.2.b: Code tính toán các hàm cần thiết}
 \textbf{Dữ liệu được đọc từ file $data\_in\textbackslash data\_VP.xlsx$} \\
-\text{Source trích từ file $source\textbackslash code5\_2b.py$}
+\text{Source trích từ file $source\textbackslash code5.py$}
 \begin{minted}{python}
   
 import math
@@ -1394,6 +1558,7 @@ def cal_HECTopCov_in(cHECin, TTop, TCov_in, ACov, AFlr): #use for formula 12
     return cHECin * pow(TTop - TCov_in, 0.33) * ACov / AFlr
 
 ##########   START READING DATA   ##########
+print("Input line of data")
 i = int(input())
 
 data = pd.read_excel("../data_in/data_VP.xlsx")
@@ -1545,7 +1710,7 @@ print("dxCO2Top = ", dxCO2Top(CO2Air, CO2Top))
 \subsubsection{Bài 5.4}
 Source trích từ $source\textbackslash code5.py$\\
 \textbf{a)}
-Với các tham số đầu vào là $VPAir\_0$(giá trị tại thời điểm t của VPAir), $VPTop\_0$(giá trị tại thời điểm t của VPTop), $h$(kích thước bước sấp xỉ), $time$(thời điểm t cần tính giá trị của VPAir và VPTop)
+Với các tham số đầu vào là $VPAir$(giá trị tại thời điểm t của VPAir), $VPTop$(giá trị tại thời điểm t của VPTop), $h$(kích thước bước sấp xỉ), $time$(thời điểm t cần tính giá trị của VPAir và VPTop)
 \begin{minted}{python}
   
 def euler(VPAir, VPTop, h, time):
@@ -1609,31 +1774,70 @@ def rk4(VPAir, VPTop, h, time):
 
     return VPAir_0, VPTop_0
 \end{minted}
-\textit{Note: } các biến như vận tốc gió(vWind), nhiệt độ(TAir, TTOP, TOut), URoof (tính thông qua ventWind và ventLee), CO2Air thay đổi sau mỗi 5 phút nên cần cập nhật chúng trong quá trình tính toán .
+\textit{Note: } các biến như vận tốc gió(vWind), nhiệt độ(TAir, TTop, TOut), URoof (tính thông qua ventWind và ventLee), CO2Air thay đổi sau mỗi 5 phút nên cần cập nhật chúng trong quá trình tính toán .
 \\\\
 \textbf{b)}
 Với các Solver ở trên, ta tính được giá trị xấp xỉ của $VPAir$ và $VPTop$ tại thời điểm t đúng 5 phút, 10 phút,.....
+\\\\
+\textbf{Dữ liệu được đọc từ file $data\_in\textbackslash data\_5.xlsx$} \\
+\begin{minted}{python}
+  def main():
+    print('Place: ', df.at[0, 'Place'])
+    print('VPAir_0: ', VPAir)
+    print('VPTop_0: ', VPTop)
+
+    step = float(input('Input step: '))
+    time = float(input('Input time: '))
+
+    worksheet.write(0, 0, 'time')
+    worksheet.write(0, 1, 'VPAir_euler')
+    worksheet.write(0, 2, 'VPTop_euler')
+    worksheet.write(0, 4, 'VPAir_rk4')
+    worksheet.write(0, 5, 'VPTop_rk4')
+    worksheet.write(1, 0, 0)
+    worksheet.write(1, 1, VPAir)
+    worksheet.write(1, 2, VPTop)
+    worksheet.write(1, 4, VPAir)
+    worksheet.write(1, 5, VPTop)
+
+    air, top = euler(VPAir, VPTop, step, time)
+    print('\nExplicit Euler')
+    print('The VPAir: ', round(air, 10))
+    print('The VPTop: ', round(top, 10))
+
+    air, top = rk4(VPAir, VPTop, step, time)
+    print('\nExplicit Runge-Kutta 4th order')
+    print('The VPAir: ', round(air, 10))
+    print('The VPTop: ', round(top, 10))
+
+
+wb = Workbook('data_out\Output_5.xlsx')
+worksheet = wb.add_worksheet()
+main()
+wb.close()
+\end{minted}
 \\
-Các tham số đầu vào được đọc từ file $data_in\textbackslash data\_5.xlsx$. Nhập kích thước bước sấp sỉ (h) là 1 (s) từ bàn phím. Nhập thời điểm t (time) là 603600 (s) tương ứng 1 tuần. Giá trị $VPAir$ và $VPTop$ tính được sau mỗi 300s sẽ được ghi vào file $Output\_5.xslx$.\\\\
-Với file $Output\_5.xslx$ ta tính độ chênh lệch của kết quả so với dữ liệu thật được lưu trong file $data\_5.xslx$ thông qua hàm $mse$ (mean squared error).
+Các tham số đầu vào được đọc từ file $data\_in\textbackslash data\_5.xlsx$. Nhập vào giá trị i (line of data) là 0. Nhập kích thước bước sấp sỉ (h) là 1 (s) từ bàn phím. Nhập thời điểm t (time) là 603600 (s) tương ứng 1 tuần. Giá trị $VPAir$ và $VPTop$ tính được sau mỗi 300s sẽ được ghi vào file $Output\_5.xslx$.\\\\
+Với file $Output\_5.xslx$ ta tính độ chênh lệch của kết quả so với dữ liệu thật được lưu trong file $data\_5.xslx$ thông qua hàm $mse$ (mean squared error) và vẽ đồ thị.
 \begin{minted}{python}
   def mse(a):
     n = 0
-    for idx in range(0, 2013):
+    for idx in range(0, nRow):
         n += math.pow((float(df.at[idx, a]) - float(de.at[idx, 'VPAir_Real'])),2)
-    return n/2013
+    return n/nRow
 
-data = pd.read_excel("../data_out/Output_5.xlsx")
+data = pd.read_excel("data_out\Out_5.xlsx")
 df = pd.DataFrame(data)
-da = pd.read_excel("../data_in/data_5.xlsx")
+da = pd.read_excel("data_in\data_5.xlsx")
 de = pd.DataFrame(da)
+nRow = len(df.index)
 print(mse('VPAir_euler'))
 print(mse('VPAir_rk4'))
 \end{minted}
 \\
 Kết quả là :\\
-mse('VPAir\_E') = 201403.0585496551 (độ lệch của phương pháp Euler)\\
-mse('VPAir\_RK4') = 201403.0854646318 (độ lệch của phương pháp Runge-Kutta 4)\\
+mse('VPAir\_euler') = 201403.0585496551 (độ lệch của phương pháp Euler)\\
+mse('VPAir\_rk4') = 201403.0854646318 (độ lệch của phương pháp Runge-Kutta 4)\\
 
 \begin{figure}[h]
 \begin{center}

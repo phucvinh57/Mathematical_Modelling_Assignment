@@ -10,9 +10,9 @@ def mse(a):
         n += math.pow((float(df.at[idx, a]) - float(de.at[idx, 'VPAir_Real'])),2)
     return n/nRow
 
-data = pd.read_excel("data_out\Output_5.xlsx")
+data = pd.read_excel("../data_out/Output_5.xlsx")
 df = pd.DataFrame(data)
-da = pd.read_excel("data_in\data_5.xlsx")
+da = pd.read_excel("../data_in/data_5.xlsx")
 de = pd.DataFrame(da)
 time = df[['time']]
 euler_vpair = df[['VPAir_euler']]

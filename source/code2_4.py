@@ -135,7 +135,7 @@ def cal_MCAirCan(P, R, CBuf, CMaxBuf):
     return MCH2O * hCBuf * (P - R)
 
 # Read data from excel file
-data = pd.read_excel("data_in\data_4.xlsx")
+data = pd.read_excel("../data_in/data_4.xlsx")
 df = pd.DataFrame(data)
 
 nHeatCO2 = float(df.at[0, "nHeatCO2"])

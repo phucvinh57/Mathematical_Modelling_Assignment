@@ -128,7 +128,7 @@ def cal_HECTopCov_in(cHECin, TTop, TCov_in, ACov, AFlr): #use for formula 12
 
 ##########   START READING DATA   ##########
 
-data = pd.read_excel("data_in\data_5.xlsx")
+data = pd.read_excel("../data_in/data_5.xlsx")
 df = pd.DataFrame(data)
 
 rb = 275
@@ -218,23 +218,35 @@ def dxVPAir(VPAir, VPTop):
     rs = cal_rs(VPCan, VPAir, R_Can, CO2Air)
     VECCanAir = cal_VECCanAir(pAir,c_p_Air,LAI,delta_H,y,rb,rs)
     MVCanAir = cal_MVCanAir(VECCanAir, VPCan, VPAir)
+    print("MVCanAir = ", MVCanAir)
     MVPadAir = cal_MVPadAir(pAir,fPad,nPad,xPad,xOut)
+    print("MVPadAir = ", MVPadAir)
     MVFogAir = cal_MVFogAir(UFog, phiFog, AFlr)
+    print("MVFogAir = ", MVFogAir)
     MVAirTop = cal_MVAirTop(MWater,R,fThScr, VPAir, VPTop,TAir,TTop)
+    print("MVAirTop = ", MVAirTop)
     MVAirThScr = cal_MVAirThScr(HECAirThScr, VPAir, VPThScr)
+    print("MVAirThScr = ", MVAirThScr)
     MVBlowAir = cal_MVBlowAir(nHeatVap, UBlow, PBlow, AFlr)
+    print("MVBlowAir = ", MVBlowAir)
     MVAirOut = cal_MVAirOut(MWater,R,fVentSide,fVentForced,VPAir,VPOut,TAir,TOut)
+    print("MVAirOut = ", MVAirOut)
     MVAirOut_Pad = cal_MVAirOut_Pad(fPad,MWater,R,VPAir,TAir)
+    print("MVAirOut_Pad = ", MVAirOut_Pad)
     MVAirMech = cal_MVAirMech(HECAirMech,VPAir,VPMech)
+    print("MVAirMech = ", MVAirMech)
     return (MVCanAir+MVPadAir+MVFogAir+MVBlowAir-MVAirThScr-MVAirTop-MVAirOut-MVAirOut_Pad-MVAirMech)/capVPAir
 
 def dxVPTop(VPAir, VPTop):
     ppfVentRoof = cal_ppfVentRoof(Cd,URoof,ARoof,AFlr,g,hVent,TAir,TOut,Cw,vWind)
     fVentRoof = cal_fVentRoof(nInsScr,fleakage,UThScr,ppfVentRoofSide,nRoof,nSide,nRoof_Thr,ppfVentRoof)
     MVTopOut = cal_MVTopOut(MWater,R,fVentRoof,VPTop,VPOut,TTop,TOut)
+    print("MVTopOut = ", MVTopOut)
     MVAirTop = cal_MVAirTop(MWater,R,fThScr, VPAir, VPTop,TAir,TTop)
+    print("MVAirTop = ", MVAirTop)
     HECTopCov_in = cal_HECTopCov_in(cHECin,TTop,TCov_in,ACov,AFlr)
     MVTopCov_in = cal_MVTopCov_in(HECTopCov_in,VPTop,VPCov_in)
+    print("MVTopCov_in = ", MVTopCov_in)
 
     return (MVAirTop-MVTopCov_in-MVTopOut)/capVPTop
 
@@ -328,8 +340,9 @@ def main():
     print('The VPAir: ', round(air, 10))
     print('The VPTop: ', round(top, 10))
 
-
 wb = Workbook('data_out\Output_5.xlsx')
 worksheet = wb.add_worksheet()
 main()
 wb.close()
+
+

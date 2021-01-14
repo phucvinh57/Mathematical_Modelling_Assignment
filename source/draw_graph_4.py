@@ -10,9 +10,9 @@ def mse(a):
         n += math.pow((float(df.at[idx, a]) - float(de.at[idx, 'CO2Air_real'])),2)
     return n/nRow
 
-data = pd.read_excel("data_out\Output_4.xlsx")
+data = pd.read_excel("../data_out/Output_4.xlsx")
 df = pd.DataFrame(data)
-da = pd.read_excel("data_in\data_4.xlsx")
+da = pd.read_excel("../data_in/data_4.xlsx")
 de = pd.DataFrame(da)
 time = df[['time']]
 euler_air = df[['CO2Air_E']]
